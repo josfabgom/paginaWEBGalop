@@ -1,0 +1,31 @@
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo GaLop S.R.L.</title>
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="has-data">
+<div class="container">
+    <div style="position: absolute; top: 15px; left: 15px; z-index: 100;"><a href="/" style="text-decoration: none; background: #3b82f6; color: white; padding: 8px 16px; border-radius: 8px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">⬅ Inicio</a></div><div class="header-logo"><div id="logo-place"><img src="assets/images/logo.png"></div><h1 style="margin:10px 0 5px 0;font-size:26px;color:#0f172a;">CATÁLOGO DE PRODUCTOS</h1><p style="color:#64748b;margin:0;">Rollos, Tóner, Tecnología y Librería · GaLop S.R.L.</p></div>
+    <div class="top-panel"><section id="seller-card" class="seller-card" aria-label="Datos del vendedor" style="display: none;"></section>
+    <nav id="categories-panel" class="categories-panel" aria-label="Categorías de productos" style="display: none;"><h2>Explorá nuestros productos</h2><div id="category-buttons" class="category-buttons"></div></nav></div>
+    <div id="catalog-date" class="catalog-date"></div>
+    <input type="text" id="search" class="search-box" placeholder="Buscar productos...">
+    <div id="catalog-sections"></div>
+<div id="cart-overlay" class="cart-overlay" role="presentation">
+  <section class="cart-dialog" role="dialog" aria-modal="true" aria-labelledby="cart-title" tabindex="-1">
+    <div class="cart-head"><h2 id="cart-title">📋 Productos de mi interés</h2><button id="cart-close" class="cart-close" type="button" aria-label="Cerrar">×</button></div>
+    <p style="color:#64748b;font-size:14px">Revisá los productos que te interesan y solicitá precios, disponibilidad y condiciones comerciales. Esta selección no implica una compra.</p>
+    <div id="cart-items"></div>
+    <div id="cart-total" class="cart-total"></div>
+    <button id="cart-clear" class="cart-clear" type="button">🗑️ Vaciar toda la selección</button>
+    <div class="cart-actions"><button id="cart-back" class="cart-back" type="button">Seguir viendo productos</button><button id="cart-send" class="cart-send" type="button">💬 Solicitar cotización por WhatsApp</button></div>
+  </section>
+</div>
+
+<div id="photo-overlay" class="photo-overlay" role="dialog" aria-modal="true" aria-label="Fotografía ampliada"><button id="photo-close" type="button" aria-label="Cerrar imagen">×</button><img id="photo-large" alt="Fotografía del producto"><p id="photo-caption"></p></div>
+<script src="/app.v3.js"></script>
+
+
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GaLop S.R.L.</title>
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .header img {
+            max-height: 80px;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .main-content h1 {
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .main-content p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 280px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            border-color: #3b82f6;
+        }
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #3b82f6;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            margin: 0 0 10px 0;
+            color: #1e293b;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin: 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e293b;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/assets/images/logo.png" alt="GaLop S.R.L. Logo">
+    </div>
+
+    <div class="main-content">
+        <h1>Bienvenidos a GaLop S.R.L.</h1>
+        <p>Expertos en soluciones tecnológicas, ventas y servicio técnico. Selecciona la plataforma a la que deseas ingresar.</p>
+
+        <div class="cards-container">
+            <a href="/productos" class="card">
+                <div class="card-icon">🛍️</div>
+                <h2>Catálogo Público</h2>
+                <p>Explora nuestra amplia variedad de productos, consulta precios y realiza tu pedido fácilmente.</p>
+            </a>
+
+            <a href="/login?callbackUrl=/catalog" class="card">
+                <div class="card-icon">📝</div>
+                <h2>Gestión de Catálogo</h2>
+                <p>Acceso exclusivo para el personal encargado de actualizar precios, fotos y stock del catálogo web.</p>
+            </a>
+
+            <a href="/login?callbackUrl=/dashboard" class="card">
+                <div class="card-icon">⚙️</div>
+                <h2>Sistema GestionQ</h2>
+                <p>Acceso gerencial al sistema completo de facturación, clientes, reportes y control de inventario interno.</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 GaLop S.R.L. - Todos los derechos reservados
+    </div>
+</body>
+</html>

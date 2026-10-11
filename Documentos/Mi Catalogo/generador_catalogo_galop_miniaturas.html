@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo GaLop S.R.L.</title>
+    <style>
+        :root { --primary: #000080; --background: #f8fafc; --surface: #ffffff; --text: #1e293b; --whatsapp: #25d366; }
+        body { font-family: system-ui, sans-serif; background-color: var(--background); color: var(--text); padding: 20px; margin: 0; padding-bottom: 100px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header-logo { text-align: center; margin-bottom: 25px; }
+        .header-logo img { max-width: 280px; height: auto; display: block; margin: 0 auto 10px auto; }
+        .upload-section { background: var(--surface); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 30px; border: 2px dashed #cbd5e1; text-align: center; }
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 20px; }
+        .upload-box { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .has-data .upload-section { display: none !important; }
+        .search-box { width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; margin-bottom: 30px; box-sizing: border-box; }
+        .categoria-titulo { font-size: 22px; font-weight: bold; color: #0f172a; margin: 35px 0 15px 0; border-bottom: 2px solid #e2e8f0; text-transform: uppercase; padding-bottom: 8px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .card { background: var(--surface); border-radius: 12px; box-shadow: 0 2px 5px rgb(0 0 0 / 0.05); border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; }
+        .img-container { width: 100%; height: 180px; background: #ffffff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px; box-sizing: border-box; border-bottom: 1px solid #f1f5f9; }
+        .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .img-container {height:195px;padding:8px 12px;}
+        .img-container img {width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;}
+        .photo-thumbnails {display:flex;justify-content:center;gap:9px;padding:7px 8px 10px;background:#fff;border-bottom:1px solid #f1f5f9;}
+        .photo-thumb {width:57px;height:45px;border:2px solid #dce5f2;border-radius:7px;padding:3px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+        .photo-thumb img {width:100%;height:100%;object-fit:contain;}
+        .photo-thumb.active {border-color:#173b8f;box-shadow:0 0 0 1px #173b8f22;}
+        .photo-thumb:focus-visible {outline:3px solid #83a7f7;outline-offset:2px;}
+
+        .card-body { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card h3 { margin: 0 0 8px 0; font-size: 14px; color: #334155; height: 40px; overflow: hidden; line-height: 1.4; }
+        .code { color: #64748b; font-size: 12px; margin-bottom: 12px; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; align-self: flex-start; }
+        .cart-controls { display: flex; align-items: center; gap: 8px; margin-top: auto; }
+        .btn-qty { background: #e2e8f0; border: none; width: 32px; height: 32px; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; color: #334155; }
+        .qty-input { flex-grow: 1; text-align: center; font-weight: bold; font-size: 15px; border: 1px solid #cbd5e1; height: 32px; border-radius: 6px; box-sizing: border-box; background: #f8fafc; }
+        .btn-action { color: white; border: none; padding: 15px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; display: block; margin-top: 15px; }
+        .btn-process { background: #2563eb; }
+        .btn-download { background: #16a34a; display: none; }
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background-color: var(--whatsapp); color: #fff; padding: 15px 30px; font-size: 16px; font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.4); display: none; z-index: 999; border: none; cursor: pointer; align-items: center; justify-content: center; }
+        .seller-card { display:none; background:white; border:1px solid #dbe4f0; border-radius:14px; padding:18px 22px; margin:18px auto 25px; max-width:650px; box-shadow:0 3px 12px #0000000b; }
+        .seller-card h2 {margin:0 0 5px; color:#000080; font-size:21px;} .seller-card p {margin:5px 0; overflow-wrap:anywhere;} .seller-actions {display:flex; flex-wrap:wrap; gap:9px; margin-top:14px;} .seller-actions a {color:white; padding:11px 15px; border-radius:8px; text-decoration:none; font-weight:650; text-align:center; flex:1; min-width:170px;} .seller-actions .contact {background:#25a958;} .seller-actions .service {background:#173b8f;}
+        .seller-settings {margin-top:14px; text-align:left; background:#eef4ff; border:1px solid #dbe4f0; border-radius:10px; padding:16px;} .seller-settings h3 {margin:0 0 12px;} .seller-fields {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;} .seller-fields label {display:block; font-size:13px; font-weight:650; margin-bottom:4px;} .seller-fields input {width:100%; box-sizing:border-box; padding:10px; border:1px solid #cbd5e1; border-radius:7px; font-size:15px;}
+
+        /* Modernización adaptable */
+        :root { --primary:#162f86; --background:#f5f7fb; }
+        .header-logo {padding:15px 0 8px;}
+        .header-logo h1 {letter-spacing:.3px;}
+        .top-panel {display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:stretch;margin:18px 0 22px;}
+        .top-panel .seller-card {margin:0;max-width:none;height:100%;box-sizing:border-box;}
+        .categories-panel {display:none;background:#fff;border:1px solid #dbe4f0;border-radius:14px;padding:18px 20px;box-shadow:0 3px 12px #0000000b;}
+        .categories-panel h2 {font-size:18px;color:#162f86;margin:0 0 12px;}
+        .category-buttons {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+        .category-btn {border:1px solid #dce5f2;border-radius:10px;padding:13px 9px;background:#f4f7fc;color:#203353;font-weight:750;cursor:pointer;font-size:13px;transition:background .15s,transform .15s;}
+        .category-btn:hover {background:#e5ecfb;transform:translateY(-1px);}
+        .category-btn.active {background:#173b8f;color:white;border-color:#173b8f;}
+        .category-btn:first-child {grid-column:1/-1;}
+        .seller-card h2 {color:#162f86;}
+        .seller-card .address {color:#53647e;font-size:14px;}
+        .search-box:focus {outline:2px solid #b4c8fa;border-color:#173b8f;}
+        .card {transition:transform .15s,box-shadow .15s;}
+        .card:hover {transform:translateY(-2px);box-shadow:0 8px 20px #0d275017;}
+        .btn-qty:hover {background:#cfdaee;}
+        .category-empty {padding:25px;text-align:center;color:#64748b;background:white;border-radius:12px;}
+        @media(max-width:750px) {body {padding:12px;padding-bottom:110px;} .top-panel {grid-template-columns:1fr;gap:12px;} .upload-grid {grid-template-columns:1fr;} .grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;} .card h3 {font-size:12px;height:52px;} .card-body {padding:10px;} .img-container {height:155px;} .seller-card,.categories-panel {padding:15px;} .whatsapp-float {right:12px;left:12px;bottom:12px;padding:14px 10px;font-size:14px;} .categoria-titulo {font-size:19px;} }
+        @media(max-width:370px) {.grid {grid-template-columns:1fr;} }
+        .cart-overlay {position:fixed;inset:0;background:rgba(13,27,54,.58);z-index:1200;display:none;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;}
+        .cart-overlay.open {display:flex;}
+        .cart-dialog {width:min(640px,100%);max-height:90vh;overflow:auto;background:white;border-radius:16px;box-shadow:0 18px 55px #0004;padding:22px;box-sizing:border-box;}
+        .cart-head {display:flex;align-items:center;justify-content:space-between;gap:10px;}
+        .cart-head h2 {margin:0;color:#162f86;font-size:22px;}
+        .cart-close {border:0;background:#edf2fa;border-radius:8px;font-size:24px;width:36px;height:36px;cursor:pointer;}
+        .cart-item {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;border-bottom:1px solid #e5eaf2;padding:13px 0;}
+        .cart-item-name {font-weight:650;color:#24344f;overflow-wrap:anywhere;}
+        .cart-item-code {font-size:12px;color:#687990;margin-top:4px;}
+        .cart-item-controls {display:flex;align-items:center;gap:8px;}
+        .cart-item-controls button {border:0;border-radius:7px;background:#e8eef8;min-width:30px;height:30px;font-weight:750;cursor:pointer;}
+        .cart-item-controls .remove {color:#b42318;background:#fff0ee;}
+        .cart-total {margin:15px 0;font-weight:700;color:#162f86;}
+        .cart-actions {display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .cart-actions button {border:0;border-radius:9px;padding:13px 8px;cursor:pointer;font-size:14px;font-weight:700;}
+        .cart-back {background:#e8eef8;color:#233f75;}
+        .cart-send {background:#20a85c;color:white;}
+        @media(max-width:450px) {.cart-dialog {padding:15px;} .cart-actions {grid-template-columns:1fr;}}
+        .catalog-date {text-align:right;font-size:13px;color:#64748b;margin:0 0 10px;}
+        .cart-clear {display:block;margin:0 0 14px auto;border:1px solid #f1c6c3;border-radius:8px;background:#fff4f3;color:#a52424;padding:10px 14px;font-weight:700;cursor:pointer;}
+        .cart-clear:disabled {opacity:.4;cursor:default;}
+        .zoomable {cursor:zoom-in;}
+        .photo-overlay {display:none;position:fixed;inset:0;z-index:1500;background:rgba(7,17,39,.9);align-items:center;justify-content:center;flex-direction:column;padding:35px 18px;box-sizing:border-box;}
+        .photo-overlay.open {display:flex;}
+        .photo-overlay img {max-width:min(94vw,1000px);max-height:75vh;object-fit:contain;background:white;border-radius:10px;}
+        .photo-overlay p {color:white;text-align:center;font-weight:650;}
+        #photo-close {position:absolute;right:18px;top:12px;background:transparent;color:white;border:0;font-size:38px;cursor:pointer;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-logo"><div id="logo-place"></div><h1 style="margin:10px 0 5px 0;font-size:26px;color:#0f172a;">CATÁLOGO DE PRODUCTOS</h1><p style="color:#64748b;margin:0;">Rollos, Tóner, Tecnología y Librería · GaLop S.R.L.</p></div>
+    <div class="upload-section">
+        <div class="upload-grid">
+            <div class="upload-box"><label style="font-weight:bold;display:block;margin-bottom:5px;">1. Archivo del Catálogo (.csv):</label><input type="file" id="csv-file" accept=".csv" /></div>
+            <div class="upload-box"><label style="font-weight:bold;display:block;margin-bottom:5px;">2. Seleccionar FOTOS (.jpg): <small>Usá CODIGO.jpg y CODIGO_2.jpg para dos fotos por producto</small></label><input type="file" id="img-files" accept=".jpg, .jpeg" multiple /></div>
+        </div>
+        <div class="upload-box" style="margin-bottom:10px;"><label style="font-weight:bold;display:block;margin-bottom:5px;">3. Seleccionar archivo del Logo corporativo (.png / .jpg):</label><input type="file" id="logo-file" accept="image/*" /></div>
+        <div class="seller-settings"><h3>4. Datos del vendedor y WhatsApp</h3><div class="seller-fields">
+          <div><label for="seller-name">Nombre y apellido *</label><input id="seller-name" placeholder="Nombre del vendedor" required></div>
+          <div><label for="seller-role">Cargo o función</label><input id="seller-role" placeholder="Asesor comercial"></div>
+          <div><label for="seller-phone">WhatsApp para pedidos y servicio técnico *</label><input id="seller-phone" type="tel" placeholder="5493765224717" required></div>
+          <div><label for="seller-email">Correo electrónico (opcional)</label><input id="seller-email" type="email" placeholder="ventas@ejemplo.com"></div>
+        </div><p style="font-size:12px;color:#64748b;margin:9px 0 0">Ingresá el número con código de país (Argentina: 549 + código de área + número), sin 0 ni 15.</p></div>
+        <div class="seller-settings"><h3>5. Presentación inicial del catálogo</h3><label for="default-category" style="display:block;margin-bottom:8px;font-weight:650">Categoría que verá primero el cliente</label><select id="default-category" style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px"><option value="TODOS">TODOS — Catálogo completo</option><option value="ROLLOS">ROLLOS</option><option value="TÓNER">TÓNER</option><option value="TECNOLOGÍA">TECNOLOGÍA</option><option value="LIBRERÍA" selected>LIBRERÍA</option></select></div>
+        <div id="status" style="margin:15px 0;font-weight:bold;color:#1e293b;font-family:monospace;text-align:left;background:#e2e8f0;padding:10px;border-radius:6px;">📋 [LOG] Esperando tus archivos planos para iniciar el procesamiento dinámico...</div>
+        <button id="btn-run" class="btn-action btn-process">⚙️ ¡PROCESAR Y ARMAR CATÁLOGO!</button>
+        <button id="btn-export" class="btn-action btn-download">💾 Descargar Catálogo con Fotos Incluidas</button>
+    </div>
+    <div class="top-panel"><section id="seller-card" class="seller-card" aria-label="Datos del vendedor"></section>
+    <nav id="categories-panel" class="categories-panel" aria-label="Categorías de productos"><h2>Explorá nuestros productos</h2><div id="category-buttons" class="category-buttons"></div></nav></div>
+    <div id="catalog-date" class="catalog-date"></div>
+    <input type="text" id="search" class="search-box" placeholder="Buscar productos..." disabled>
+    <div id="catalog-sections"></div>
+</div>
+
+<div id="cart-overlay" class="cart-overlay" role="presentation">
+  <section class="cart-dialog" role="dialog" aria-modal="true" aria-labelledby="cart-title" tabindex="-1">
+    <div class="cart-head"><h2 id="cart-title">📋 Productos de mi interés</h2><button id="cart-close" class="cart-close" type="button" aria-label="Cerrar">×</button></div>
+    <p style="color:#64748b;font-size:14px">Revisá los productos que te interesan y solicitá precios, disponibilidad y condiciones comerciales. Esta selección no implica una compra.</p>
+    <div id="cart-items"></div>
+    <div id="cart-total" class="cart-total"></div>
+    <button id="cart-clear" class="cart-clear" type="button">🗑️ Vaciar toda la selección</button>
+    <div class="cart-actions"><button id="cart-back" class="cart-back" type="button">Seguir viendo productos</button><button id="cart-send" class="cart-send" type="button">💬 Solicitar cotización por WhatsApp</button></div>
+  </section>
+</div>
+
+<div id="photo-overlay" class="photo-overlay" role="dialog" aria-modal="true" aria-label="Fotografía ampliada"><button id="photo-close" type="button" aria-label="Cerrar imagen">×</button><img id="photo-large" alt="Fotografía del producto"><p id="photo-caption"></p></div>
+<script>
+    // --- PARTE 1 COMPLETA ---
+     const DATOS_INCRUSTADOS = []; const IMAGENES_INCRUSTADAS = {}; let LOGO_INCRUSTADO = ""; const VENDEDOR_INCRUSTADO = null;
+    let productosGlobales = [], mapaImagenes = {}, logoBase64 = "", carrito = {};
+    let vendedor = VENDEDOR_INCRUSTADO;
+    const CATEGORIA_INICIAL = 'LIBRERÍA';
+    const FECHA_CATALOGO = '';
+    let storageKey = '';
+    function prepararGuardado() {
+        if (!DATOS_INCRUSTADOS.length) return;
+        const identificador = JSON.stringify([vendedor?.telefono, productosGlobales.map(p=>p.codigo)]);
+        let hash=2166136261;
+        for(let i=0;i<identificador.length;i++){hash^=identificador.charCodeAt(i);hash=Math.imul(hash,16777619);}
+        storageKey='galop_seleccion_'+(hash>>>0).toString(16);
+        try {
+            const guardado=JSON.parse(localStorage.getItem(storageKey)||'{}');
+            const codigos=new Set(productosGlobales.map(p=>String(p.codigo)));
+            carrito={};
+            for(const [codigo,cantidad] of Object.entries(guardado)) if(codigos.has(codigo)&&Number.isInteger(cantidad)&&cantidad>0&&cantidad<=99999) carrito[codigo]=cantidad;
+        } catch(e) {carrito={};}
+        actualizarBotonFlotante();
+    }
+    function guardarSeleccion() {if(!storageKey)return;try {localStorage.setItem(storageKey,JSON.stringify(carrito));}catch(e){/* Navegador sin almacenamiento */}}
+    function mostrarFecha() {if(FECHA_CATALOGO)document.getElementById('catalog-date').textContent='📅 Catálogo actualizado: '+FECHA_CATALOGO;}
+
+    const CATEGORIAS = [{id:'TODOS', icono:'▦'}, {id:'ROLLOS', icono:'🧾'}, {id:'TÓNER', icono:'🖨️'}, {id:'TECNOLOGÍA', icono:'💻'}, {id:'LIBRERÍA', icono:'📚'}];
+    let categoriaActiva = CATEGORIA_INICIAL;
+    function normalizarCategoria(valor) {return String(valor||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();}
+    function coincideCategoria(producto, categoria) {
+        if(categoria==='TODOS') return true;
+        const cat=normalizarCategoria(producto.categoria);
+        const elegido=normalizarCategoria(categoria);
+        return cat===elegido || cat.startsWith(elegido+' ') || cat.startsWith(elegido+' -') || cat.startsWith(elegido+':');
+    }
+    function dibujarCategorias() {
+        const panel=document.getElementById('categories-panel');
+        const botones=document.getElementById('category-buttons');
+        botones.replaceChildren();panel.style.display='block';
+        CATEGORIAS.forEach(c=>{
+            const b=document.createElement('button');b.type='button';b.className='category-btn'+(categoriaActiva===c.id?' active':'');
+            b.textContent=c.icono+' '+c.id;b.setAttribute('aria-pressed',String(categoriaActiva===c.id));
+            b.addEventListener('click',()=>{categoriaActiva=c.id;dibujarCategorias();filtrarProductos();});botones.appendChild(b);
+        });
+    }
+    function filtrarProductos() {
+        const q=document.getElementById('search').value.trim().toLocaleLowerCase('es');
+        const filtrados=productosGlobales.filter(p=>coincideCategoria(p,categoriaActiva) && (!q || [p.descripcion,p.codigo,p.categoria].some(v=>String(v).toLocaleLowerCase('es').includes(q))));
+        dibujarProductos(filtrados);
+    }
+    const statusDiv = document.getElementById('status');
+
+    if (DATOS_INCRUSTADOS.length > 0) {
+        document.body.classList.add('has-data'); productosGlobales = DATOS_INCRUSTADOS; mapaImagenes = IMAGENES_INCRUSTADAS; logoBase64 = LOGO_INCRUSTADO;
+        if (logoBase64) document.getElementById('logo-place').innerHTML = "<img src='" + logoBase64 + "'>";
+        document.getElementById('search').disabled = false; prepararGuardado(); dibujarCategorias(); filtrarProductos(); mostrarVendedor(); mostrarFecha();
+    }
+
+    document.getElementById('logo-file').addEventListener('change', function(e) {
+        const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
+        reader.onload = function(evt) { logoBase64 = evt.target.result; document.getElementById('logo-place').innerHTML = "<img src='" + logoBase64 + "'>"; };
+        reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btn-run').addEventListener('click', function() {
+        const csvInput = document.getElementById('csv-file'), imgInput = document.getElementById('img-files');
+        const nombre = document.getElementById('seller-name').value.trim();
+        const cargo = document.getElementById('seller-role').value.trim();
+        const email = document.getElementById('seller-email').value.trim();
+        const telefono = document.getElementById('seller-phone').value.replace(/\D/g,'');
+        if (!nombre) { alert('Ingresá el nombre del vendedor.'); return; }
+        if (!/^\d{10,15}$/.test(telefono)) { alert('Ingresá un WhatsApp válido con código de país, por ejemplo 5493765224717.'); return; }
+        if (email && !document.getElementById('seller-email').checkValidity()) { alert('Revisá el correo electrónico.'); return; }
+        vendedor = {nombre, cargo, email, telefono};
+        categoriaActiva = document.getElementById('default-category').value;
+        if (!csvInput.files.length) { alert("Por favor, selecciona primero el archivo .csv."); return; }
+        statusDiv.innerHTML = "⚙️ [LOG] Empaquetando fotos en memoria pura...";
+        mapaImagenes = {}; let total = imgInput.files.length, proc = 0;
+        if (total === 0) { procesarCSV(csvInput.files[0]); } else {
+            Array.from(imgInput.files).forEach(f => {
+                const reader = new FileReader(); let nom = f.name.toLowerCase().replace('.jpeg', '').replace('.jpg', '').trim();
+                reader.onload = function(evt) { mapaImagenes[nom] = evt.target.result; proc++; if (proc === total) { statusDiv.innerHTML = "✅ [LOG] Fotos listas. Leyendo Excel..."; procesarCSV(csvInput.files[0]); } };
+                reader.readAsDataURL(f);
+            });
+        }
+    });
+
+    function procesarCSV(file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            try {
+                const filas = evt.target.result.split('\n'); productosGlobales = []; let cat = "General";
+                statusDiv.innerHTML += "<br>📊 [LOG] Analizando " + filas.length + " líneas...";
+                for (let i = 0; i < filas.length; i++) {
+                    const linea = filas[i].trim(); if (!linea) continue;
+                    let c = linea.indexOf(';') !== -1 ? linea.split(';') : linea.split(',');
+                    if(!c || c.length < 1) continue;
+                    
+                    // SEPARADOR INDEPENDIENTE: Fuerza la lectura de la celda 0 y la celda 1 por separado
+                    let c0 = c[0] ? String(c[0]).replace(/"/g, '').trim() : ''; 
+                    let c1 = c[1] ? String(c[1]).replace(/"/g, '').trim() : '';
+                    
+                    if (c0 === "CATÁLOGO DE PRODUCTOS" || c0.toLowerCase().includes("listado") || c0.toLowerCase().includes("código") || c0.toLowerCase().includes("codigo") || c1.toLowerCase().includes("descrip")) continue;
+                    if (c0 && !c1) { cat = c0; statusDiv.innerHTML += "<br>📂 [LOG] Categoría: " + cat; continue; }
+                    if (c0 && c1) productosGlobales.push({ codigo: c0, descripcion: c1, categoria: cat });
+                }
+                if (productosGlobales.length > 0) {
+                    statusDiv.style.color = "#16a34a"; statusDiv.innerHTML += "<br>🎉 [LOG] ¡Éxito! " + productosGlobales.length + " artículos cargados.";
+                    document.getElementById('search').disabled = false; document.getElementById('btn-run').style.display = "none"; document.getElementById('btn-export').style.display = "block";
+                    dibujarCategorias(); filtrarProductos(); mostrarVendedor();
+                } else { statusDiv.style.color = "#dc2626"; statusDiv.innerHTML += "<br>❌ [ERROR] No se encontraron filas válidas en el CSV."; }
+            } catch (err) { statusDiv.style.color = "#dc2626"; statusDiv.innerHTML += "<br>💥 [ERROR CRÍTICO] Falla en lectura: " + err.message; }
+        };
+        reader.readAsText(file, 'ISO-8859-1');
+    }
+
+    
+    // --- CONTINÚA EN LA PARTE 3 ---
+      function dibujarProductos(prods) {
+        const container = document.getElementById('catalog-sections'); container.innerHTML = '';
+        if(!prods.length) {const aviso=document.createElement('div');aviso.className='category-empty';aviso.textContent='No hay productos en esta categoría todavía. Probá otra sección o el botón TODOS.';container.appendChild(aviso);return;}
+        const grupos = {}; prods.forEach(p => { if (!grupos[p.categoria]) grupos[p.categoria] = []; grupos[p.categoria].push(p); });
+        for (const cat in grupos) {
+            const seccion = document.createElement('div'); seccion.innerHTML = '<div class="categoria-titulo">' + cat + '</div>';
+            const grid = document.createElement('div'); grid.className = 'grid';
+            grupos[cat].forEach(p => {
+                const card = document.createElement('div'); card.className = 'card';
+                const fotos = [mapaImagenes[String(p.codigo).toLowerCase()], mapaImagenes[String(p.codigo).toLowerCase()+'_2']].filter(Boolean);
+                const src = fotos[0] || ""; const cant = carrito[p.codigo] || 0;
+                card.innerHTML = `<div class='img-container'><img src='${src}' style='${src ? "" : "display:none;"}'><div style='${src ? "display:none;" : "display:block;"} color:#94a3b8; font-weight:bold; font-size:14px;'>📦 Sin Foto</div></div><div class='card-body'><h3>${p.descripcion}</h3><div class='code'>Cód: ${p.codigo}</div><div class='price'>Consultar</div><div class='cart-controls'><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', -1)">-</button><input type='text' id='qty-${p.codigo}' class='qty-input' value='${cant}' readonly><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', 1)">+</button></div></div>`;
+                if(fotos.length){
+                    const cont=card.querySelector('.img-container'), foto=cont.querySelector('img'); let indice=0;
+                    foto.classList.add('zoomable');foto.title='Ver imagen ampliada';foto.alt=p.descripcion;
+                    foto.addEventListener('click',()=>abrirFoto(fotos[indice],p.descripcion));
+                    if(fotos.length>1){
+                        const miniaturas=document.createElement('div');miniaturas.className='photo-thumbnails';
+                        const botones=[];
+                        const actualizar=()=>{
+                            foto.src=fotos[indice];
+                            botones.forEach((boton,i)=>{
+                                boton.classList.toggle('active',i===indice);
+                                boton.setAttribute('aria-pressed',String(i===indice));
+                            });
+                        };
+                        fotos.forEach((srcFoto,i)=>{
+                            const boton=document.createElement('button');
+                            boton.type='button';boton.className='photo-thumb';
+                            boton.setAttribute('aria-label','Ver fotografía '+(i+1)+' de '+fotos.length);
+                            const mini=document.createElement('img');mini.src=srcFoto;mini.alt='';
+                            boton.appendChild(mini);
+                            boton.addEventListener('click',()=>{indice=i;actualizar();});
+                            miniaturas.appendChild(boton);botones.push(boton);
+                        });
+                        cont.insertAdjacentElement('afterend',miniaturas);
+                        actualizar();
+                    }
+                }
+                grid.appendChild(card);
+            });
+            seccion.appendChild(grid); container.appendChild(seccion);
+        }
+    }
+
+    function abrirFoto(src,nombre){document.getElementById('photo-large').src=src;document.getElementById('photo-caption').textContent=nombre;document.getElementById('photo-overlay').classList.add('open');}
+    function cerrarFoto(){document.getElementById('photo-overlay').classList.remove('open');document.getElementById('photo-large').removeAttribute('src');}
+    document.getElementById('photo-close').addEventListener('click',cerrarFoto);
+    document.getElementById('photo-overlay').addEventListener('click',e=>{if(e.target.id==='photo-overlay')cerrarFoto();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarFoto();});
+    window.cambiarCantidad = function(codigo, cambio) {
+        let input = document.getElementById("qty-" + codigo); let valor = parseInt(input.value) + cambio; if (valor < 0) valor = 0; input.value = valor;
+        if (valor === 0) { delete carrito[codigo]; } else { carrito[codigo] = valor; }
+        guardarSeleccion(); actualizarBotonFlotante();
+    };
+
+    function waUrl(mensaje) {
+        const numero = String(vendedor?.telefono || '').replace(/\D/g, '');
+        if (!numero) return '';
+        return 'https://api.whatsapp.com/send?phone=' + numero + '&text=' + encodeURIComponent(mensaje);
+    }
+    function abrirWhatsApp(mensaje) {
+        const url = waUrl(mensaje);
+        if (!url) { alert('No hay un número de WhatsApp configurado.'); return; }
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
+    function mostrarVendedor() {
+        if (!vendedor) return;
+        const tarjeta = document.getElementById('seller-card');
+        tarjeta.replaceChildren(); tarjeta.style.display='block';
+        const titulo=document.createElement('h2'); titulo.textContent=vendedor.nombre; tarjeta.appendChild(titulo);
+        for (const dato of [vendedor.cargo, '📍 Herrera 4480 · CP (3300) Posadas - Misiones', '📱 WhatsApp: +' + vendedor.telefono, vendedor.email ? '✉️ ' + vendedor.email : '']) {
+            if (!dato) continue; const p=document.createElement('p'); p.textContent=dato; tarjeta.appendChild(p);
+        }
+        const acciones=document.createElement('div'); acciones.className='seller-actions';
+        const links=[['💬 Contactar al vendedor','contact','Hola, ' + vendedor.nombre + '. Quisiera hacer una consulta sobre el catálogo de GaLop S.R.L.'],['🔧 Solicitar servicio técnico','service','Hola, GaLop S.R.L. Necesito solicitar servicio técnico. Mi nombre es: _____. El equipo es: _____. El problema es: _____.']];
+        for (const [texto,clase,mensaje] of links) {const link=document.createElement('a');link.className=clase;link.textContent=texto;link.href=waUrl(mensaje);link.target='_blank';link.rel='noopener noreferrer';link.addEventListener('click', function(e) { e.preventDefault(); abrirWhatsApp(mensaje); });acciones.appendChild(link);}
+        tarjeta.appendChild(acciones);
+    }
+    function crearMensajePedido() {
+        let mensaje='📋 *SOLICITUD DE COTIZACIÓN - GaLop S.R.L.*\nVendedor: '+vendedor.nombre+'\n\n';
+        productosGlobales.forEach(p=>{if(carrito[p.codigo]) mensaje+='📦 *'+p.descripcion+'*\n   • Código: '+p.codigo+'\n   • Cantidad: '+carrito[p.codigo]+' unidad(es)\n\n';});
+        return mensaje+'¿Podrían informarme los precios, la disponibilidad y las condiciones comerciales de estos productos? Muchas gracias.';
+    }
+    function abrirResumen() {
+        if (!Object.keys(carrito).length) return;
+        document.getElementById('cart-overlay').classList.add('open');
+        dibujarResumen();
+        document.querySelector('.cart-dialog').focus();
+    }
+    function cerrarResumen() {document.getElementById('cart-overlay').classList.remove('open');}
+    function cambiarCantidadResumen(codigo, delta) {
+        const nueva=Math.max(0,(carrito[codigo]||0)+delta);
+        if(nueva===0) delete carrito[codigo]; else carrito[codigo]=nueva;
+        const visible=document.getElementById('qty-'+codigo);
+        if(visible) visible.value=nueva;
+        guardarSeleccion();actualizarBotonFlotante();dibujarResumen();
+    }
+    function dibujarResumen() {
+        const lista=document.getElementById('cart-items');lista.replaceChildren();
+        let unidades=0, articulos=0;
+        productosGlobales.forEach(p=>{
+            const cantidad=carrito[p.codigo]||0;if(!cantidad)return;
+            unidades+=cantidad;articulos++;
+            const fila=document.createElement('div');fila.className='cart-item';
+            const info=document.createElement('div');
+            const nombre=document.createElement('div');nombre.className='cart-item-name';nombre.textContent=p.descripcion;
+            const codigo=document.createElement('div');codigo.className='cart-item-code';codigo.textContent='Código: '+p.codigo;
+            info.append(nombre,codigo);
+            const controles=document.createElement('div');controles.className='cart-item-controls';
+            const menos=document.createElement('button');menos.type='button';menos.textContent='−';menos.setAttribute('aria-label','Quitar una unidad');menos.onclick=()=>cambiarCantidadResumen(p.codigo,-1);
+            const numero=document.createElement('strong');numero.textContent=cantidad;
+            const mas=document.createElement('button');mas.type='button';mas.textContent='+';mas.setAttribute('aria-label','Agregar una unidad');mas.onclick=()=>cambiarCantidadResumen(p.codigo,1);
+            const quitar=document.createElement('button');quitar.type='button';quitar.textContent='×';quitar.className='remove';quitar.title='Eliminar producto';quitar.onclick=()=>cambiarCantidadResumen(p.codigo,-(carrito[p.codigo]||0));
+            controles.append(menos,numero,mas,quitar);fila.append(info,controles);lista.appendChild(fila);
+        });
+        document.getElementById('cart-total').textContent=articulos+' producto(s) diferente(s) · '+unidades+' unidad(es) en total';
+        document.getElementById('cart-send').disabled=!unidades;
+        document.getElementById('cart-clear').disabled=!unidades;
+        if(!unidades){const aviso=document.createElement('p');aviso.textContent='Todavía no seleccionaste productos de interés.';lista.appendChild(aviso);}
+    }
+    document.getElementById('cart-clear').addEventListener('click',()=>{if(!Object.keys(carrito).length)return;if(!confirm('¿Querés quitar todos los productos seleccionados?'))return;carrito={};guardarSeleccion();filtrarProductos();actualizarBotonFlotante();dibujarResumen();});
+    document.getElementById('cart-close').addEventListener('click',cerrarResumen);
+    document.getElementById('cart-back').addEventListener('click',cerrarResumen);
+    document.getElementById('cart-overlay').addEventListener('click',e=>{if(e.target.id==='cart-overlay')cerrarResumen();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarResumen();});
+    document.getElementById('cart-send').addEventListener('click',()=>{
+        if(!Object.keys(carrito).length||!vendedor)return;
+        abrirWhatsApp(crearMensajePedido());
+    });
+    function actualizarBotonFlotante() {
+        const total=Object.values(carrito).reduce((sum,cantidad)=>sum+cantidad,0);
+        let boton=document.getElementById('wa-pedido');
+        if(!boton){boton=document.createElement('button');boton.type='button';boton.id='wa-pedido';boton.className='whatsapp-float';document.body.appendChild(boton);}
+        boton.style.display=total&&vendedor?'flex':'none';
+        boton.textContent='📋 Ver productos seleccionados ('+total+')';
+        boton.onclick=abrirResumen;
+    }
+
+    document.getElementById('search').addEventListener('input', function(e) {
+        filtrarProductos();
+    });
+
+    document.getElementById('btn-export').addEventListener('click', function() {
+        const copia = document.documentElement.cloneNode(true);
+        copia.querySelector('#wa-pedido')?.remove();
+        copia.querySelector('#cart-overlay')?.classList.remove('open');
+        copia.querySelector('#photo-overlay')?.classList.remove('open');
+        copia.querySelector('#photo-large')?.removeAttribute('src');
+        const itemsCopia=copia.querySelector('#cart-items');if(itemsCopia)itemsCopia.replaceChildren();
+        const tarjetaCopia = copia.querySelector('#seller-card');
+        if (tarjetaCopia) { tarjetaCopia.innerHTML = ''; tarjetaCopia.style.display = 'none'; }
+        const panelCopia=copia.querySelector('#categories-panel'); if(panelCopia) {panelCopia.style.display='none';panelCopia.querySelector('#category-buttons').innerHTML='';}
+        const html = copia.outerHTML;
+        let final = html.replace('const DATOS_INCRUSTADOS = [];', 'const DATOS_INCRUSTADOS = ' + JSON.stringify(productosGlobales) + ';');
+        final = final.replace('const IMAGENES_INCRUSTADAS = {};', 'const IMAGENES_INCRUSTADAS = ' + JSON.stringify(mapaImagenes) + ';');
+        final = final.replace('let LOGO_INCRUSTADO = "";', 'let LOGO_INCRUSTADO = ' + JSON.stringify(logoBase64) + ';');
+        final = final.replace("const CATEGORIA_INICIAL = 'LIBRERÍA';",'const CATEGORIA_INICIAL = '+JSON.stringify(categoriaActiva)+';');
+        final = final.replace("const FECHA_CATALOGO = '';",'const FECHA_CATALOGO = '+JSON.stringify(new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}))+';');
+        final = final.replace('const VENDEDOR_INCRUSTADO = null;', 'const VENDEDOR_INCRUSTADO = ' + JSON.stringify(vendedor).replace(/</g, '\\u003c') + ';');
+        const blob = new Blob([final], { type: 'text/html;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'catalogo_final_con_fotos.html'; a.click();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "windows"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Tenant {
+  id                  String   @id @default(cuid())
+  companyName         String
+  cloudflareTunnelUrl String?  // Optional now, not strictly needed for push sync
+  apiKey              String   // API Key to authenticate with VPS
+  dashboardStats      String?  // JSON string containing the latest synced stats
+  lastSyncAt          DateTime?
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  users               User[]
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("CLIENT") // ADMIN or CLIENT
+  tenantId      String?
+  tenant        Tenant?  @relation(fields: [tenantId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CatalogItem {
+  id          String   @id @default(cuid())
+  codigo      String   @unique
+  descripcion String
+  categoria   String
+  precio      String?  @default("Consultar")
+  foto1       String?
+  foto2       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CatalogSetting {
+  id              String   @id @default(cuid())
+  vendedorNombre  String?  @default("GaLop S.R.L.")
+  vendedorRol     String?  @default("Asesor Comercial")
+  vendedorPhone   String?  @default("5493765224717")
+  vendedorEmail   String?
+  categoriaInicial String? @default("LIBRERÍA")
+  updatedAt       DateTime @updatedAt
+}
