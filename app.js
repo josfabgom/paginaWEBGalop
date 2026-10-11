@@ -111,69 +111,11 @@
                 filtrarProductos(); 
                 mostrarVendedor(); 
                 mostrarFecha();
+                actualizarBotonFlotante();
             }
         });
 
-    document.getElementById('logo-file').addEventListener('change', function(e) {
-        const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
-        reader.onload = function(evt) { logoBase64 = evt.target.result; document.getElementById('logo-place').innerHTML = "<img src='" + logoBase64 + "'>"; };
-        reader.readAsDataURL(file);
-    });
 
-    document.getElementById('btn-run').addEventListener('click', function() {
-        const csvInput = document.getElementById('csv-file'), imgInput = document.getElementById('img-files');
-        const nombre = document.getElementById('seller-name').value.trim();
-        const cargo = document.getElementById('seller-role').value.trim();
-        const email = document.getElementById('seller-email').value.trim();
-        const telefono = document.getElementById('seller-phone').value.replace(/\D/g,'');
-        if (!nombre) { alert('Ingresá el nombre del vendedor.'); return; }
-        if (!/^\d{10,15}$/.test(telefono)) { alert('Ingresá un WhatsApp válido con código de país, por ejemplo 5493765224717.'); return; }
-        if (email && !document.getElementById('seller-email').checkValidity()) { alert('Revisá el correo electrónico.'); return; }
-        vendedor = {nombre, cargo, email, telefono};
-        categoriaActiva = document.getElementById('default-category').value;
-        if (!csvInput.files.length) { alert("Por favor, selecciona primero el archivo .csv."); return; }
-        statusDiv.innerHTML = "⚙️ [LOG] Empaquetando fotos en memoria pura...";
-        mapaImagenes = {}; let total = imgInput.files.length, proc = 0;
-        if (total === 0) { procesarCSV(csvInput.files[0]); } else {
-            Array.from(imgInput.files).forEach(f => {
-                const reader = new FileReader(); let nom = f.name.toLowerCase().replace('.jpeg', '').replace('.jpg', '').trim();
-                reader.onload = function(evt) { mapaImagenes[nom] = evt.target.result; proc++; if (proc === total) { statusDiv.innerHTML = "✅ [LOG] Fotos listas. Leyendo Excel..."; procesarCSV(csvInput.files[0]); } };
-                reader.readAsDataURL(f);
-            });
-        }
-    });
-
-    function procesarCSV(file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            try {
-                const filas = evt.target.result.split('\n'); productosGlobales = []; let cat = "General";
-                statusDiv.innerHTML += "<br>📊 [LOG] Analizando " + filas.length + " líneas...";
-                for (let i = 0; i < filas.length; i++) {
-                    const linea = filas[i].trim(); if (!linea) continue;
-                    let c = linea.indexOf(';') !== -1 ? linea.split(';') : linea.split(',');
-                    if(!c || c.length < 1) continue;
-                    
-                    // SEPARADOR INDEPENDIENTE: Fuerza la lectura de la celda 0 y la celda 1 por separado
-                    let c0 = c[0] ? String(c[0]).replace(/"/g, '').trim() : ''; 
-                    let c1 = c[1] ? String(c[1]).replace(/"/g, '').trim() : '';
-                    
-                    if (c0 === "CATÁLOGO DE PRODUCTOS" || c0.toLowerCase().includes("listado") || c0.toLowerCase().includes("código") || c0.toLowerCase().includes("codigo") || c1.toLowerCase().includes("descrip")) continue;
-                    if (c0 && !c1) { cat = c0; statusDiv.innerHTML += "<br>📂 [LOG] Categoría: " + cat; continue; }
-                    if (c0 && c1) productosGlobales.push({ codigo: c0, descripcion: c1, categoria: cat });
-                }
-                if (productosGlobales.length > 0) {
-                    statusDiv.style.color = "#16a34a"; statusDiv.innerHTML += "<br>🎉 [LOG] ¡Éxito! " + productosGlobales.length + " artículos cargados.";
-                    document.getElementById('search').disabled = false; document.getElementById('btn-run').style.display = "none"; document.getElementById('btn-export').style.display = "block";
-                    dibujarCategorias(); filtrarProductos(); mostrarVendedor();
-                } else { statusDiv.style.color = "#dc2626"; statusDiv.innerHTML += "<br>❌ [ERROR] No se encontraron filas válidas en el CSV."; }
-            } catch (err) { statusDiv.style.color = "#dc2626"; statusDiv.innerHTML += "<br>💥 [ERROR CRÍTICO] Falla en lectura: " + err.message; }
-        };
-        reader.readAsText(file, 'ISO-8859-1');
-    }
-
-    
-    // --- CONTINÚA EN LA PARTE 3 ---
       let toastTimeout = null;
       function mostrarToast(mensaje) {
           const toast = document.getElementById('cart-toast');
@@ -245,15 +187,16 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarFoto();});
 
     window.cambiarCantidad = function(codigo, cambio) {
-        const p = productosGlobales.find(item => item.codigo === codigo);
-        let actual = carrito[codigo] || 0;
+        const codStr = String(codigo).trim();
+        const p = productosGlobales.find(item => String(item.codigo).trim() === codStr);
+        let actual = carrito[codStr] || 0;
         let nuevo = actual + cambio;
         if (nuevo < 0) nuevo = 0;
         
         if (nuevo === 0) {
-            delete carrito[codigo];
+            delete carrito[codStr];
         } else {
-            carrito[codigo] = nuevo;
+            carrito[codStr] = nuevo;
             if (cambio > 0 && p) {
                 mostrarToast('✅ Agregado: ' + p.descripcion);
             }
@@ -261,7 +204,7 @@
         
         guardarSeleccion();
         actualizarBotonFlotante();
-        actualizarCardControles(codigo);
+        actualizarCardControles(codStr);
     };
 
     function actualizarCardControles(codigo) {
@@ -503,22 +446,5 @@
         filtrarProductos();
     });
 
-    document.getElementById('btn-export').addEventListener('click', function() {
-        const copia = document.documentElement.cloneNode(true);
-        copia.querySelector('#wa-pedido')?.remove();
-        copia.querySelector('#cart-overlay')?.classList.remove('open');
-        copia.querySelector('#photo-overlay')?.classList.remove('open');
-        copia.querySelector('#photo-large')?.removeAttribute('src');
-        const itemsCopia=copia.querySelector('#cart-items');if(itemsCopia)itemsCopia.replaceChildren();
-        const tarjetaCopia = copia.querySelector('#seller-card');
-        if (tarjetaCopia) { tarjetaCopia.innerHTML = ''; tarjetaCopia.style.display = 'none'; }
-        const panelCopia=copia.querySelector('#categories-panel'); if(panelCopia) {panelCopia.style.display='none';panelCopia.querySelector('#category-buttons').innerHTML='';}
-        const html = copia.outerHTML;
-        let final = html.replace('const DATOS_INCRUSTADOS = [];', 'const DATOS_INCRUSTADOS = ' + JSON.stringify(productosGlobales) + ';');
-        final = final.replace('const IMAGENES_INCRUSTADAS = {};', 'const IMAGENES_INCRUSTADAS = ' + JSON.stringify(mapaImagenes) + ';');
-        final = final.replace('let LOGO_INCRUSTADO = "";', 'let LOGO_INCRUSTADO = ' + JSON.stringify(logoBase64) + ';');
-        final = final.replace("const CATEGORIA_INICIAL = 'LIBRERÍA';",'const CATEGORIA_INICIAL = '+JSON.stringify(categoriaActiva)+';');
-        final = final.replace("const FECHA_CATALOGO = '';",'const FECHA_CATALOGO = '+JSON.stringify(new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}))+';');
-        final = final.replace('const VENDEDOR_INCRUSTADO = null;', 'const VENDEDOR_INCRUSTADO = ' + JSON.stringify(vendedor).replace(/</g, '\\u003c') + ';');
-        const blob = new Blob([final], { type: 'text/html;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'catalogo_final_con_fotos.html'; a.click();
-    });
+    window.abrirResumen = abrirResumen;
+    window.cerrarResumen = cerrarResumen;
