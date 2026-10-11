@@ -43,7 +43,7 @@
     const FECHA_CATALOGO = "10/10/2026";
     let storageKey = '';
     function prepararGuardado() {
-        if (!DATOS_INCRUSTADOS.length) return;
+        if (!productosGlobales.length) return;
         const identificador = JSON.stringify([vendedor?.telefono, productosGlobales.map(p=>p.codigo)]);
         let hash=2166136261;
         for(let i=0;i<identificador.length;i++){hash^=identificador.charCodeAt(i);hash=Math.imul(hash,16777619);}
@@ -174,6 +174,16 @@
 
     
     // --- CONTINÚA EN LA PARTE 3 ---
+      let toastTimeout = null;
+      function mostrarToast(mensaje) {
+          const toast = document.getElementById('cart-toast');
+          if (!toast) return;
+          toast.innerHTML = mensaje + ' <button onclick="abrirResumen()">Ver 🛒</button>';
+          toast.classList.add('show');
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+      }
+
       function dibujarProductos(prods) {
         const container = document.getElementById('catalog-sections'); container.innerHTML = '';
         if(!prods.length) {const aviso=document.createElement('div');aviso.className='category-empty';aviso.textContent='No hay productos en esta categoría todavía. Probá otra sección o el botón TODOS.';container.appendChild(aviso);return;}
@@ -185,7 +195,16 @@
                 const card = document.createElement('div'); card.className = 'card';
                 const fotos = [mapaImagenes[String(p.codigo).toLowerCase()], mapaImagenes[String(p.codigo).toLowerCase()+'_2']].filter(Boolean);
                 const src = fotos[0] || ""; const cant = carrito[p.codigo] || 0;
-                card.innerHTML = `<div class='img-container'><img src='${src}' style='${src ? "" : "display:none;"}'><div style='${src ? "display:none;" : "display:block;"} color:#94a3b8; font-weight:bold; font-size:14px;'>📦 Sin Foto</div></div><div class='card-body'><h3>${p.descripcion}</h3><div class='code'>Cód: ${p.codigo}</div><div class='price'>Consultar</div><div class='cart-controls'><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', -1)">-</button><input type='text' id='qty-${p.codigo}' class='qty-input' value='${cant}' readonly><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', 1)">+</button></div></div>`;
+                const precioDisplay = p.precio && p.precio !== 'Consultar' ? (p.precio.startsWith('$') ? p.precio : '$' + p.precio) : 'Consultar';
+
+                let controlsHtml = '';
+                if (cant > 0) {
+                    controlsHtml = `<div class='cart-controls active' id='ctrl-${p.codigo}'><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', -1)" title="Restar 1">−</button><div class='qty-display'><span class='qty-val' id='qty-${p.codigo}'>${cant}</span><span class='qty-label'>en cotización</span></div><button class='btn-qty' onclick="cambiarCantidad('${p.codigo}', 1)" title="Sumar 1">+</button></div>`;
+                } else {
+                    controlsHtml = `<button class='btn-add-to-quote' id='btn-add-${p.codigo}' onclick="cambiarCantidad('${p.codigo}', 1)">🛒 Agregar a cotización</button>`;
+                }
+
+                card.innerHTML = `<div class='img-container'><img src='${src}' style='${src ? "" : "display:none;"}' alt='${p.descripcion}'><div style='${src ? "display:none;" : "display:block;"} color:#94a3b8; font-weight:bold; font-size:14px;'>📦 Sin Foto</div></div><div class='card-body'><h3>${p.descripcion}</h3><div class='card-meta-row'><span class='code'>Cód: ${p.codigo}</span><span class='price'>${precioDisplay}</span></div><div class='cart-action-box' id='box-${p.codigo}'>${controlsHtml}</div></div>`;
                 if(fotos.length){
                     const cont=card.querySelector('.img-container'), foto=cont.querySelector('img'); let indice=0;
                     foto.classList.add('zoomable');foto.title='Ver imagen ampliada';foto.alt=p.descripcion;
@@ -224,11 +243,37 @@
     document.getElementById('photo-close').addEventListener('click',cerrarFoto);
     document.getElementById('photo-overlay').addEventListener('click',e=>{if(e.target.id==='photo-overlay')cerrarFoto();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarFoto();});
+
     window.cambiarCantidad = function(codigo, cambio) {
-        let input = document.getElementById("qty-" + codigo); let valor = parseInt(input.value) + cambio; if (valor < 0) valor = 0; input.value = valor;
-        if (valor === 0) { delete carrito[codigo]; } else { carrito[codigo] = valor; }
-        guardarSeleccion(); actualizarBotonFlotante();
+        const p = productosGlobales.find(item => item.codigo === codigo);
+        let actual = carrito[codigo] || 0;
+        let nuevo = actual + cambio;
+        if (nuevo < 0) nuevo = 0;
+        
+        if (nuevo === 0) {
+            delete carrito[codigo];
+        } else {
+            carrito[codigo] = nuevo;
+            if (cambio > 0 && p) {
+                mostrarToast('✅ Agregado: ' + p.descripcion);
+            }
+        }
+        
+        guardarSeleccion();
+        actualizarBotonFlotante();
+        actualizarCardControles(codigo);
     };
+
+    function actualizarCardControles(codigo) {
+        const box = document.getElementById('box-' + codigo);
+        if (!box) return;
+        const cant = carrito[codigo] || 0;
+        if (cant > 0) {
+            box.innerHTML = `<div class='cart-controls active' id='ctrl-${codigo}'><button class='btn-qty' onclick="cambiarCantidad('${codigo}', -1)" title="Restar 1">−</button><div class='qty-display'><span class='qty-val' id='qty-${codigo}'>${cant}</span><span class='qty-label'>en cotización</span></div><button class='btn-qty' onclick="cambiarCantidad('${codigo}', 1)" title="Sumar 1">+</button></div>`;
+        } else {
+            box.innerHTML = `<button class='btn-add-to-quote' id='btn-add-${codigo}' onclick="cambiarCantidad('${codigo}', 1)">🛒 Agregar a cotización</button>`;
+        }
+    }
 
     function waUrl(mensaje) {
         const numero = String(vendedor?.telefono || '').replace(/\D/g, '');
@@ -254,63 +299,204 @@
         tarjeta.appendChild(acciones);
     }
     function crearMensajePedido() {
-        let mensaje='📋 *SOLICITUD DE COTIZACIÓN - GaLop S.R.L.*\nVendedor: '+vendedor.nombre+'\n\n';
-        productosGlobales.forEach(p=>{if(carrito[p.codigo]) mensaje+='📦 *'+p.descripcion+'*\n   • Código: '+p.codigo+'\n   • Cantidad: '+carrito[p.codigo]+' unidad(es)\n\n';});
-        return mensaje+'¿Podrían informarme los precios, la disponibilidad y las condiciones comerciales de estos productos? Muchas gracias.';
+        const cliente = document.getElementById('cart-client-name')?.value.trim() || '';
+        const nota = document.getElementById('cart-client-note')?.value.trim() || '';
+
+        let mensaje = '📋 *SOLICITUD DE COTIZACIÓN - GaLop S.R.L.*\n';
+        if (vendedor && vendedor.nombre) mensaje += '👤 *Atención:* ' + vendedor.nombre + '\n';
+        if (cliente) mensaje += '🏢 *Cliente / Empresa:* ' + cliente + '\n';
+        if (nota) mensaje += '📝 *Nota:* ' + nota + '\n';
+        mensaje += '📅 *Fecha:* ' + new Date().toLocaleDateString('es-AR') + '\n\n';
+        mensaje += '*DETALLE DE PRODUCTOS:* \n';
+
+        let i = 1;
+        let totalItems = 0;
+        productosGlobales.forEach(p => {
+            const cant = carrito[p.codigo];
+            if (cant) {
+                totalItems += cant;
+                const precioTxt = p.precio && p.precio !== 'Consultar' ? (p.precio.startsWith('$') ? p.precio : '$' + p.precio) : 'Consultar';
+                mensaje += i + ') *' + p.descripcion + '*\n';
+                mensaje += '   • Código: ' + p.codigo + '\n';
+                mensaje += '   • Cantidad: ' + cant + ' unidad(es)\n';
+                if (precioTxt !== 'Consultar') mensaje += '   • Precio ref: ' + precioTxt + '\n';
+                mensaje += '\n';
+                i++;
+            }
+        });
+
+        mensaje += '📊 *Total solicitado:* ' + (i - 1) + ' producto(s) · ' + totalItems + ' unidades\n\n';
+        mensaje += '¿Podrían informarme cotización formal, disponibilidad y formas de pago y entrega? ¡Muchas gracias!';
+        return mensaje;
     }
+
     function abrirResumen() {
-        if (!Object.keys(carrito).length) return;
         document.getElementById('cart-overlay').classList.add('open');
         dibujarResumen();
-        document.querySelector('.cart-dialog').focus();
+        const dialog = document.querySelector('.cart-dialog');
+        if (dialog) dialog.focus();
     }
-    function cerrarResumen() {document.getElementById('cart-overlay').classList.remove('open');}
+
+    function cerrarResumen() {
+        document.getElementById('cart-overlay').classList.remove('open');
+    }
+
     function cambiarCantidadResumen(codigo, delta) {
-        const nueva=Math.max(0,(carrito[codigo]||0)+delta);
-        if(nueva===0) delete carrito[codigo]; else carrito[codigo]=nueva;
-        const visible=document.getElementById('qty-'+codigo);
-        if(visible) visible.value=nueva;
-        guardarSeleccion();actualizarBotonFlotante();dibujarResumen();
+        const nueva = Math.max(0, (carrito[codigo] || 0) + delta);
+        if (nueva === 0) delete carrito[codigo]; else carrito[codigo] = nueva;
+        guardarSeleccion();
+        actualizarBotonFlotante();
+        actualizarCardControles(codigo);
+        dibujarResumen();
     }
+
     function dibujarResumen() {
-        const lista=document.getElementById('cart-items');lista.replaceChildren();
-        let unidades=0, articulos=0;
-        productosGlobales.forEach(p=>{
-            const cantidad=carrito[p.codigo]||0;if(!cantidad)return;
-            unidades+=cantidad;articulos++;
-            const fila=document.createElement('div');fila.className='cart-item';
-            const info=document.createElement('div');
-            const nombre=document.createElement('div');nombre.className='cart-item-name';nombre.textContent=p.descripcion;
-            const codigo=document.createElement('div');codigo.className='cart-item-code';codigo.textContent='Código: '+p.codigo;
-            info.append(nombre,codigo);
-            const controles=document.createElement('div');controles.className='cart-item-controls';
-            const menos=document.createElement('button');menos.type='button';menos.textContent='−';menos.setAttribute('aria-label','Quitar una unidad');menos.onclick=()=>cambiarCantidadResumen(p.codigo,-1);
-            const numero=document.createElement('strong');numero.textContent=cantidad;
-            const mas=document.createElement('button');mas.type='button';mas.textContent='+';mas.setAttribute('aria-label','Agregar una unidad');mas.onclick=()=>cambiarCantidadResumen(p.codigo,1);
-            const quitar=document.createElement('button');quitar.type='button';quitar.textContent='×';quitar.className='remove';quitar.title='Eliminar producto';quitar.onclick=()=>cambiarCantidadResumen(p.codigo,-(carrito[p.codigo]||0));
-            controles.append(menos,numero,mas,quitar);fila.append(info,controles);lista.appendChild(fila);
+        const lista = document.getElementById('cart-items');
+        lista.replaceChildren();
+        let unidades = 0, articulos = 0, totalEstimado = 0, tienePrecios = false;
+
+        productosGlobales.forEach(p => {
+            const cantidad = carrito[p.codigo] || 0;
+            if (!cantidad) return;
+            unidades += cantidad;
+            articulos++;
+
+            const precioNum = parseFloat(String(p.precio || '').replace(/[^0-9.]/g, ''));
+            let subtotalTexto = 'A cotizar';
+            if (!isNaN(precioNum) && precioNum > 0) {
+                tienePrecios = true;
+                const sub = precioNum * cantidad;
+                totalEstimado += sub;
+                subtotalTexto = '$' + sub.toLocaleString('es-AR');
+            }
+
+            const fotos = [mapaImagenes[String(p.codigo).toLowerCase()], mapaImagenes[String(p.codigo).toLowerCase() + '_2']].filter(Boolean);
+            const fotoUrl = fotos[0] || '';
+
+            const fila = document.createElement('div');
+            fila.className = 'cart-item';
+
+            const imgDiv = document.createElement('div');
+            imgDiv.className = 'cart-item-img';
+            if (fotoUrl) {
+                imgDiv.innerHTML = `<img src="${fotoUrl}" alt="${p.descripcion}">`;
+            } else {
+                imgDiv.innerHTML = `<span style="font-size:20px;">📦</span>`;
+            }
+
+            const info = document.createElement('div');
+            info.className = 'cart-item-info';
+            const nombre = document.createElement('div');
+            nombre.className = 'cart-item-name';
+            nombre.textContent = p.descripcion;
+            const meta = document.createElement('div');
+            meta.className = 'cart-item-meta';
+            meta.innerHTML = `<span class="cart-item-code">Cód: ${p.codigo}</span> <span class="cart-item-price">${subtotalTexto !== 'A cotizar' ? 'Subtotal: ' + subtotalTexto : 'Precio a cotizar'}</span>`;
+            info.append(nombre, meta);
+
+            const controles = document.createElement('div');
+            controles.className = 'cart-item-controls';
+            const menos = document.createElement('button');
+            menos.type = 'button';
+            menos.textContent = '−';
+            menos.setAttribute('aria-label', 'Quitar una unidad');
+            menos.onclick = () => cambiarCantidadResumen(p.codigo, -1);
+            const numero = document.createElement('span');
+            numero.className = 'cart-qty-badge';
+            numero.textContent = cantidad;
+            const mas = document.createElement('button');
+            mas.type = 'button';
+            mas.textContent = '+';
+            mas.setAttribute('aria-label', 'Agregar una unidad');
+            mas.onclick = () => cambiarCantidadResumen(p.codigo, 1);
+            const quitar = document.createElement('button');
+            quitar.type = 'button';
+            quitar.textContent = '🗑️';
+            quitar.className = 'remove';
+            quitar.title = 'Eliminar de cotización';
+            quitar.onclick = () => cambiarCantidadResumen(p.codigo, -(carrito[p.codigo] || 0));
+
+            controles.append(menos, numero, mas, quitar);
+            fila.append(imgDiv, info, controles);
+            lista.appendChild(fila);
         });
-        document.getElementById('cart-total').textContent=articulos+' producto(s) diferente(s) · '+unidades+' unidad(es) en total';
-        document.getElementById('cart-send').disabled=!unidades;
-        document.getElementById('cart-clear').disabled=!unidades;
-        if(!unidades){const aviso=document.createElement('p');aviso.textContent='Todavía no seleccionaste productos de interés.';lista.appendChild(aviso);}
+
+        let totalHtml = `<span>${articulos} producto(s) · ${unidades} unidad(es)</span>`;
+        if (tienePrecios && totalEstimado > 0) {
+            totalHtml += `<span style="color:#166534;font-size:15px;font-weight:800;">Total est: $${totalEstimado.toLocaleString('es-AR')}</span>`;
+        }
+        document.getElementById('cart-total').innerHTML = totalHtml;
+        document.getElementById('cart-send').disabled = !unidades;
+        document.getElementById('cart-clear').disabled = !unidades;
+
+        if (!unidades) {
+            const aviso = document.createElement('div');
+            aviso.style.padding = '30px 15px';
+            aviso.style.textAlign = 'center';
+            aviso.style.color = '#64748b';
+            aviso.innerHTML = '🛒 <strong>Tu cotización está vacía</strong><br><span style="font-size:13px;">Explorá el catálogo y agregá artículos con el botón "Agregar a cotización".</span>';
+            lista.appendChild(aviso);
+        }
     }
-    document.getElementById('cart-clear').addEventListener('click',()=>{if(!Object.keys(carrito).length)return;if(!confirm('¿Querés quitar todos los productos seleccionados?'))return;carrito={};guardarSeleccion();filtrarProductos();actualizarBotonFlotante();dibujarResumen();});
-    document.getElementById('cart-close').addEventListener('click',cerrarResumen);
-    document.getElementById('cart-back').addEventListener('click',cerrarResumen);
-    document.getElementById('cart-overlay').addEventListener('click',e=>{if(e.target.id==='cart-overlay')cerrarResumen();});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarResumen();});
-    document.getElementById('cart-send').addEventListener('click',()=>{
-        if(!Object.keys(carrito).length||!vendedor)return;
+
+    document.getElementById('cart-clear')?.addEventListener('click', () => {
+        if (!Object.keys(carrito).length) return;
+        if (!confirm('¿Querés vaciar todos los productos de tu cotización?')) return;
+        const codigos = Object.keys(carrito);
+        carrito = {};
+        guardarSeleccion();
+        codigos.forEach(c => actualizarCardControles(c));
+        actualizarBotonFlotante();
+        dibujarResumen();
+    });
+
+    document.getElementById('cart-close')?.addEventListener('click', cerrarResumen);
+    document.getElementById('cart-back')?.addEventListener('click', cerrarResumen);
+    document.getElementById('cart-overlay')?.addEventListener('click', e => { if (e.target.id === 'cart-overlay') cerrarResumen(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarResumen(); });
+
+    document.getElementById('cart-send')?.addEventListener('click', () => {
+        if (!Object.keys(carrito).length) return;
         abrirWhatsApp(crearMensajePedido());
     });
+
+    document.getElementById('cart-copy')?.addEventListener('click', () => {
+        if (!Object.keys(carrito).length) return;
+        const texto = crearMensajePedido();
+        navigator.clipboard.writeText(texto).then(() => {
+            mostrarToast('📋 ¡Resumen copiado al portapapeles!');
+        }).catch(() => {
+            alert('Texto de cotización:\n\n' + texto);
+        });
+    });
+
+    document.getElementById('nav-cart-btn')?.addEventListener('click', abrirResumen);
+
     function actualizarBotonFlotante() {
-        const total=Object.values(carrito).reduce((sum,cantidad)=>sum+cantidad,0);
-        let boton=document.getElementById('wa-pedido');
-        if(!boton){boton=document.createElement('button');boton.type='button';boton.id='wa-pedido';boton.className='whatsapp-float';document.body.appendChild(boton);}
-        boton.style.display=total&&vendedor?'flex':'none';
-        boton.textContent='📋 Ver productos seleccionados ('+total+')';
-        boton.onclick=abrirResumen;
+        const total = Object.values(carrito).reduce((sum, cant) => sum + cant, 0);
+
+        const navBadge = document.getElementById('nav-cart-badge');
+        if (navBadge) navBadge.textContent = total;
+
+        let boton = document.getElementById('wa-pedido');
+        if (!boton) {
+            boton = document.createElement('button');
+            boton.type = 'button';
+            boton.id = 'wa-pedido';
+            boton.className = 'whatsapp-float';
+            document.body.appendChild(boton);
+        }
+
+        if (total > 0 && vendedor) {
+            boton.style.display = 'flex';
+            boton.innerHTML = `<span>🛒 Cotizar pedido (${total})</span> <span style="font-size:18px;">💬</span>`;
+            boton.onclick = abrirResumen;
+            boton.classList.remove('pulse');
+            void boton.offsetWidth;
+            boton.classList.add('pulse');
+        } else {
+            boton.style.display = 'none';
+        }
     }
 
     document.getElementById('search').addEventListener('input', function(e) {
