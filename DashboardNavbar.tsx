@@ -35,6 +35,12 @@ export default function DashboardNavbar({
               >
                 Dashboard
               </a>
+              <a
+                href="/catalog"
+                className="text-slate-300 hover:text-white hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Catálogo ABM
+              </a>
               {user.role === "ADMIN" && (
                 <a
                   href="/dashboard/admin"
@@ -100,6 +106,12 @@ export default function DashboardNavbar({
               className="text-slate-300 hover:text-white hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium"
             >
               Dashboard
+            </a>
+            <a
+              href="/catalog"
+              className="text-slate-300 hover:text-white hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Catálogo ABM
             </a>
             {user.role === "ADMIN" && (
               <a
