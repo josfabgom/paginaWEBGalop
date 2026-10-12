@@ -21,7 +21,9 @@ export async function POST(req: Request) {
                 descripcion: data.descripcion,
                 categoria: data.categoria,
                 precio: data.precio || "Consultar",
-                foto1: data.foto1 || null
+                foto1: data.foto1 || null,
+                esOferta: Boolean(data.esOferta),
+                textoOferta: data.textoOferta || (data.esOferta ? "🔥 OFERTA" : null)
             }
         });
         return NextResponse.json({ success: true, item });
@@ -33,7 +35,9 @@ export async function POST(req: Request) {
                 descripcion: data.descripcion,
                 categoria: data.categoria,
                 precio: data.precio || "Consultar",
-                foto1: data.foto1 || null
+                foto1: data.foto1 || null,
+                esOferta: Boolean(data.esOferta),
+                textoOferta: data.textoOferta || (data.esOferta ? "🔥 OFERTA" : null)
             }
         });
         return NextResponse.json({ success: true, item });

@@ -13,7 +13,8 @@ import {
   CheckCircle,
   HelpCircle,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Flame
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -65,9 +66,15 @@ export default function CatalogAdminPage() {
 
   const saveItem = async (e: any) => {
     e.preventDefault();
+    const payload = {
+      ...editingItem,
+      esOferta: Boolean(editingItem.esOferta),
+      textoOferta: editingItem.esOferta ? (editingItem.textoOferta || "🔥 OFERTA") : null
+    };
+
     const res = await fetch("/api/catalog/item", {
       method: "POST",
-      body: JSON.stringify(editingItem)
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (data.success) {
@@ -98,9 +105,23 @@ export default function CatalogAdminPage() {
         ) {
           return;
         }
+
+        const normalized = arr.map((item: any) => {
+          const isOferta = Boolean(
+            item.esOferta ||
+            item.oferta === true ||
+            ["SI", "S", "1", "TRUE", "YES"].includes(String(item.oferta || "").toUpperCase())
+          );
+          return {
+            ...item,
+            esOferta: isOferta,
+            textoOferta: item.textoOferta || (typeof item.oferta === "string" && !["SI", "S", "1", "TRUE", "NO", "0", "FALSE"].includes(item.oferta.toUpperCase()) ? item.oferta : isOferta ? "🔥 OFERTA" : null)
+          };
+        });
+
         const res = await fetch("/api/catalog/sync", {
           method: "POST",
-          body: JSON.stringify({ items: arr })
+          body: JSON.stringify({ items: normalized })
         });
         const data = await res.json();
         if (data.success) {
@@ -140,7 +161,6 @@ export default function CatalogAdminPage() {
         const mappedItems = rawRows
           .map((row) => {
             const getCol = (...names: string[]) => {
-              // Intento exacto
               for (const n of names) {
                 if (
                   row[n] !== undefined &&
@@ -150,7 +170,6 @@ export default function CatalogAdminPage() {
                   return String(row[n]).trim();
                 }
               }
-              // Intento normalizado
               const cleanKeys = Object.keys(row);
               for (const rk of cleanKeys) {
                 const normRk = rk
@@ -202,26 +221,37 @@ export default function CatalogAdminPage() {
               : "Consultar";
             const foto1 = getCol("foto1", "foto", "imagen", "foto_url", "url_foto");
 
+            // Mapeo de la columna de oferta
+            const ofertaRaw = getCol("oferta", "es_oferta", "esoferta", "promo", "promocion", "destacado", "descuento");
+            const ofertaUpper = ofertaRaw.toUpperCase();
+            const isTrueVal = ["SI", "S", "1", "TRUE", "VERDADERO", "YES", "Y"].includes(ofertaUpper);
+            const isFalseVal = ["", "NO", "0", "FALSE", "FALSO", "N"].includes(ofertaUpper);
+            const esOferta = isTrueVal || (!isFalseVal && ofertaRaw.length > 0);
+            const textoOferta = isTrueVal ? "🔥 OFERTA" : (!isFalseVal && ofertaRaw.length > 0 ? ofertaRaw : null);
+
             return {
               codigo: codigo || Math.random().toString(36).substring(7),
               descripcion: descripcion || "Sin descripción",
               categoria: categoria.toUpperCase(),
               precio,
-              foto1: foto1 || null
+              foto1: foto1 || null,
+              esOferta,
+              textoOferta
             };
           })
           .filter((item) => item.descripcion !== "Sin descripción" || item.codigo);
 
         if (mappedItems.length === 0) {
           alert(
-            "No se detectaron productos válidos. Asegúrate de que las columnas se llamen: codigo, descripcion, categoria, precio."
+            "No se detectaron productos válidos. Asegúrate de que las columnas se llamen: codigo, descripcion, categoria, precio, oferta."
           );
           return;
         }
 
+        const ofertasCount = mappedItems.filter((i) => i.esOferta).length;
         if (
           !confirm(
-            `Se detectaron ${mappedItems.length} productos en la planilla Excel.\n¿Deseas reemplazar el catálogo con estos productos?`
+            `Se detectaron ${mappedItems.length} productos en la planilla Excel (${ofertasCount} en Oferta).\n¿Deseas reemplazar el catálogo con estos productos?`
           )
         ) {
           return;
@@ -235,7 +265,7 @@ export default function CatalogAdminPage() {
         const data = await res.json();
         if (data.success) {
           alert(
-            `¡Catálogo actualizado con éxito! Se cargaron ${data.count} productos desde Excel.`
+            `¡Catálogo actualizado con éxito! Se cargaron ${data.count} productos (${ofertasCount} ofertas) desde Excel.`
           );
           fetchAll();
         } else {
@@ -249,28 +279,39 @@ export default function CatalogAdminPage() {
     e.target.value = "";
   };
 
-  // Descarga automática de la plantilla de Excel de ejemplo
+  // Descarga automática de la plantilla de Excel de ejemplo con columna de OFERTA
   const downloadExcelTemplate = () => {
     const templateRows = [
       {
-        codigo: "10333",
-        descripcion: "SOBRES MANILA 2629 27X37X100 (OF)",
-        categoria: "LIBRERÍA",
+        codigo: "10236",
+        descripcion: "LECTOR DE MESA HASAR 3410",
+        categoria: "TECNOLOGÍA Y COMPUTACIÓN",
         precio: "Consultar",
-        foto1: "/assets/images/10333.jpeg"
+        oferta: "SI",
+        foto1: "/assets/images/10236.jpeg"
       },
       {
         codigo: "10041",
         descripcion: "IMPRESORA TERMICA HASAR H-181",
         categoria: "TECNOLOGÍA Y COMPUTACIÓN",
         precio: "125000",
+        oferta: "🔥 20% OFF",
         foto1: "/assets/images/10041.jpeg"
+      },
+      {
+        codigo: "10333",
+        descripcion: "SOBRES MANILA 2629 27X37X100 (OF)",
+        categoria: "LIBRERÍA",
+        precio: "Consultar",
+        oferta: "NO",
+        foto1: "/assets/images/10333.jpeg"
       },
       {
         codigo: "10345",
         descripcion: "TONER SP3710 - GTC",
         categoria: "TONER",
         precio: "18500",
+        oferta: "NO",
         foto1: "/assets/images/10345.jpeg"
       },
       {
@@ -278,6 +319,7 @@ export default function CatalogAdminPage() {
         descripcion: "ROLLOS TERMICOS 55X44 TOP",
         categoria: "ROLLOS",
         precio: "Consultar",
+        oferta: "🔥 PROMO",
         foto1: "/assets/images/10011.jpeg"
       }
     ];
@@ -288,6 +330,7 @@ export default function CatalogAdminPage() {
       { wch: 42 }, // descripcion
       { wch: 28 }, // categoria
       { wch: 15 }, // precio
+      { wch: 15 }, // oferta
       { wch: 35 }  // foto1
     ];
     const wb = XLSX.utils.book_new();
@@ -302,7 +345,9 @@ export default function CatalogAdminPage() {
         descripcion: "",
         categoria: "LIBRERÍA",
         precio: "Consultar",
-        foto1: ""
+        foto1: "",
+        esOferta: false,
+        textoOferta: "🔥 OFERTA"
       }
     );
     setModalOpen(true);
@@ -312,14 +357,18 @@ export default function CatalogAdminPage() {
   const filteredItems = useMemo(() => {
     return items.filter((p) => {
       const matchCat =
-        selectedCategory === "TODAS" ||
-        String(p.categoria || "").toUpperCase() === selectedCategory;
+        selectedCategory === "TODAS"
+          ? true
+          : selectedCategory === "OFERTAS"
+          ? Boolean(p.esOferta)
+          : String(p.categoria || "").toUpperCase() === selectedCategory;
       const term = searchTerm.toLowerCase().trim();
       const matchSearch =
         !term ||
         String(p.codigo || "").toLowerCase().includes(term) ||
         String(p.descripcion || "").toLowerCase().includes(term) ||
-        String(p.categoria || "").toLowerCase().includes(term);
+        String(p.categoria || "").toLowerCase().includes(term) ||
+        (p.esOferta && "oferta".includes(term));
       return matchCat && matchSearch;
     });
   }, [items, selectedCategory, searchTerm]);
@@ -330,6 +379,10 @@ export default function CatalogAdminPage() {
       if (p.categoria) set.add(String(p.categoria).toUpperCase());
     });
     return Array.from(set);
+  }, [items]);
+
+  const totalOfertas = useMemo(() => {
+    return items.filter((p) => p.esOferta).length;
   }, [items]);
 
   if (loading) {
@@ -349,7 +402,7 @@ export default function CatalogAdminPage() {
             Autogestión de Catálogo
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Administra los productos, precios y datos visibles en la web pública de GaLop S.R.L.
+            Administra los productos, precios, ofertas y datos visibles en la web pública de GaLop S.R.L.
           </p>
         </div>
         <a
@@ -380,7 +433,7 @@ export default function CatalogAdminPage() {
                 </span>
               </h3>
               <p className="text-xs text-slate-500">
-                Haz clic aquí para {showHelp ? "ocultar" : "ver"} los nombres de columnas y ejemplos de carga
+                Haz clic aquí para {showHelp ? "ocultar" : "ver"} los nombres de columnas, ofertas y ejemplos de carga
               </p>
             </div>
           </div>
@@ -425,13 +478,13 @@ export default function CatalogAdminPage() {
                     <td className="p-2.5 font-mono font-semibold text-blue-700">codigo</td>
                     <td className="p-2.5 font-bold text-emerald-700">Sí</td>
                     <td className="p-2.5 text-slate-600">Código único o SKU identificador del producto.</td>
-                    <td className="p-2.5 font-mono text-slate-800">10333</td>
+                    <td className="p-2.5 font-mono text-slate-800">10236</td>
                   </tr>
                   <tr className="hover:bg-slate-50">
                     <td className="p-2.5 font-mono font-semibold text-blue-700">descripcion</td>
                     <td className="p-2.5 font-bold text-emerald-700">Sí</td>
                     <td className="p-2.5 text-slate-600">Nombre completo y especificaciones del producto.</td>
-                    <td className="p-2.5 text-slate-800">SOBRES MANILA 2629 27X37X100 (OF)</td>
+                    <td className="p-2.5 text-slate-800">LECTOR DE MESA HASAR 3410</td>
                   </tr>
                   <tr className="hover:bg-slate-50">
                     <td className="p-2.5 font-mono font-semibold text-blue-700">categoria</td>
@@ -442,7 +495,7 @@ export default function CatalogAdminPage() {
                       <code className="bg-slate-100 px-1 py-0.5 rounded text-blue-800 font-semibold">TONER</code>, o{" "}
                       <code className="bg-slate-100 px-1 py-0.5 rounded text-blue-800 font-semibold">ROLLOS</code>.
                     </td>
-                    <td className="p-2.5 font-mono text-slate-800">LIBRERÍA</td>
+                    <td className="p-2.5 font-mono text-slate-800">TECNOLOGÍA Y COMPUTACIÓN</td>
                   </tr>
                   <tr className="hover:bg-slate-50">
                     <td className="p-2.5 font-mono font-semibold text-blue-700">precio</td>
@@ -453,13 +506,23 @@ export default function CatalogAdminPage() {
                     </td>
                     <td className="p-2.5 font-mono text-slate-800">$ 1.500 o Consultar</td>
                   </tr>
+                  <tr className="hover:bg-amber-50/50 bg-amber-50/20">
+                    <td className="p-2.5 font-mono font-bold text-amber-800 flex items-center gap-1">
+                      <Flame className="w-3.5 h-3.5 text-amber-600" /> oferta
+                    </td>
+                    <td className="p-2.5 text-slate-500">Opcional</td>
+                    <td className="p-2.5 text-slate-600">
+                      Pon <code className="bg-amber-100 text-amber-900 font-bold px-1 rounded">SI</code> para activar la cinta de oferta, o escribe un texto como <code className="bg-amber-100 text-amber-900 font-bold px-1 rounded">20% OFF</code> o <code className="bg-amber-100 text-amber-900 font-bold px-1 rounded">PROMO</code>. Pon <code>NO</code> o déjalo vacío para producto normal.
+                    </td>
+                    <td className="p-2.5 font-mono text-amber-800 font-bold">SI  /  20% OFF  /  NO</td>
+                  </tr>
                   <tr className="hover:bg-slate-50">
                     <td className="p-2.5 font-mono font-semibold text-blue-700">foto1</td>
                     <td className="p-2.5 text-slate-500">Opcional</td>
                     <td className="p-2.5 text-slate-600">
-                      Ruta local a la imagen o URL directa web (ej: <code>/assets/images/10333.jpeg</code>).
+                      Ruta local a la imagen o URL directa web (ej: <code>/assets/images/10236.jpeg</code>).
                     </td>
-                    <td className="p-2.5 font-mono text-slate-800">/assets/images/10333.jpeg</td>
+                    <td className="p-2.5 font-mono text-slate-800">/assets/images/10236.jpeg</td>
                   </tr>
                 </tbody>
               </table>
@@ -468,7 +531,7 @@ export default function CatalogAdminPage() {
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800 flex items-start gap-2">
               <span className="text-base">💡</span>
               <div>
-                <strong>Consejo:</strong> Te recomendamos presionar el botón <strong>&quot;Descargar Plantilla Excel (.xlsx)&quot;</strong> arriba a la derecha. Ya viene con el formato y ejemplos reales cargados para que solo tengas que reemplazar las filas con tus productos.
+                <strong>Consejo:</strong> Te recomendamos presionar el botón <strong>&quot;Descargar Plantilla Excel (.xlsx)&quot;</strong> arriba a la derecha. Ya viene con la columna de oferta y ejemplos reales cargados para que solo tengas que reemplazar las filas con tus productos.
               </div>
             </div>
           </div>
@@ -513,10 +576,17 @@ export default function CatalogAdminPage() {
         {/* Barra de herramientas superior */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 pb-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Listado de Productos ({items.length})
-            </h2>
-            <p className="text-xs text-slate-500">
+            <div className="flex items-center gap-3">
+              <h2 className="text-xl font-bold text-slate-900">
+                Listado de Productos ({items.length})
+              </h2>
+              {totalOfertas > 0 && (
+                <span className="bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                  <Flame className="w-3.5 h-3.5 text-amber-600" /> {totalOfertas} en Oferta
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
               Agrega productos individualmente o sube tu catálogo completo en Excel o JSON.
             </p>
           </div>
@@ -555,20 +625,25 @@ export default function CatalogAdminPage() {
             <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
             <input
               type="text"
-              placeholder="Buscar por código, descripción o categoría..."
+              placeholder="Buscar por código, descripción, categoría o 'oferta'..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
-          <div className="sm:w-64">
+          <div className="sm:w-72">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="w-full py-2 px-3 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
             >
               <option value="TODAS">Todas las categorías ({items.length})</option>
+              {totalOfertas > 0 && (
+                <option value="OFERTAS" className="font-bold text-amber-700">
+                  🔥 Solo Ofertas y Destacados ({totalOfertas})
+                </option>
+              )}
               {uniqueCategories.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -586,28 +661,36 @@ export default function CatalogAdminPage() {
                 <th className="p-3 w-16">Foto</th>
                 <th className="p-3 w-24">Cód.</th>
                 <th className="p-3">Descripción</th>
-                <th className="p-3 w-40">Categoría</th>
+                <th className="p-3 w-36">Categoría</th>
                 <th className="p-3 w-28">Precio</th>
+                <th className="p-3 w-28 text-center">Estado</th>
                 <th className="p-3 w-24 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredItems.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-400">
+                  <td colSpan={7} className="p-8 text-center text-slate-400">
                     No se encontraron productos que coincidan con la búsqueda.
                   </td>
                 </tr>
               ) : (
                 filteredItems.slice(0, 100).map((item) => (
-                  <tr key={item.id || item.codigo} className="hover:bg-slate-50/80 transition">
+                  <tr key={item.id || item.codigo} className={`hover:bg-slate-50/80 transition ${item.esOferta ? "bg-amber-50/30" : ""}`}>
                     <td className="p-2.5">
                       {item.foto1 ? (
-                        <img
-                          src={item.foto1}
-                          alt={item.descripcion}
-                          className="w-10 h-10 object-cover rounded-md border border-slate-200 shadow-sm"
-                        />
+                        <div className="relative w-10 h-10">
+                          <img
+                            src={item.foto1}
+                            alt={item.descripcion}
+                            className="w-10 h-10 object-cover rounded-md border border-slate-200 shadow-sm"
+                          />
+                          {item.esOferta && (
+                            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-600 text-[9px] text-white font-bold" title="En Oferta">
+                              🔥
+                            </span>
+                          )}
+                        </div>
                       ) : (
                         <div className="w-10 h-10 bg-slate-100 rounded-md flex items-center justify-center text-xs text-slate-400 border border-slate-200">
                           📦
@@ -618,7 +701,15 @@ export default function CatalogAdminPage() {
                       {item.codigo}
                     </td>
                     <td className="p-2.5 font-medium text-slate-900 max-w-md">
-                      {item.descripcion}
+                      <div className="flex items-center flex-wrap gap-1.5">
+                        <span>{item.descripcion}</span>
+                        {item.esOferta && (
+                          <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-sm">
+                            <Flame className="w-2.5 h-2.5" />
+                            {item.textoOferta || "OFERTA"}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-2.5">
                       <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
@@ -627,6 +718,15 @@ export default function CatalogAdminPage() {
                     </td>
                     <td className="p-2.5 font-semibold text-emerald-800">
                       {item.precio || "Consultar"}
+                    </td>
+                    <td className="p-2.5 text-center">
+                      {item.esOferta ? (
+                        <span className="inline-block text-[11px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">
+                          🔥 Oferta
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-400">Regular</span>
+                      )}
                     </td>
                     <td className="p-2.5 text-center">
                       <div className="flex items-center justify-center gap-2">
@@ -684,7 +784,7 @@ export default function CatalogAdminPage() {
                 <input
                   required
                   className="w-full border border-slate-300 rounded-lg p-2.5 text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 outline-none text-sm font-mono"
-                  placeholder="Ej: 10333"
+                  placeholder="Ej: 10236"
                   value={editingItem.codigo}
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, codigo: e.target.value })
@@ -699,7 +799,7 @@ export default function CatalogAdminPage() {
                 <input
                   required
                   className="w-full border border-slate-300 rounded-lg p-2.5 text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 outline-none text-sm"
-                  placeholder="Ej: SOBRES MANILA 2629 27X37X100 (OF)"
+                  placeholder="Ej: LECTOR DE MESA HASAR 3410"
                   value={editingItem.descripcion}
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, descripcion: e.target.value })
@@ -741,6 +841,48 @@ export default function CatalogAdminPage() {
                 </div>
               </div>
 
+              {/* SECCIÓN DE OFERTA / DESTACADO */}
+              <div className="p-3.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl space-y-2">
+                <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(editingItem.esOferta)}
+                    onChange={(e) =>
+                      setEditingItem({
+                        ...editingItem,
+                        esOferta: e.target.checked,
+                        textoOferta: editingItem.textoOferta || "🔥 OFERTA"
+                      })
+                    }
+                    className="w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500"
+                  />
+                  <span className="text-xs sm:text-sm font-bold text-amber-900 flex items-center gap-1.5">
+                    <Flame className="w-4 h-4 text-red-600" />
+                    Marcar como Producto en Oferta / Destacado
+                  </span>
+                </label>
+
+                {editingItem.esOferta && (
+                  <div className="pt-1.5 pl-6">
+                    <label className="block text-[11px] font-semibold text-amber-900 mb-1">
+                      Texto de la cinta o insignia de oferta:
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full border border-amber-300 rounded-lg p-2 text-slate-900 bg-white text-xs font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                      placeholder="Ej: 🔥 OFERTA, 20% OFF, PROMO, etc."
+                      value={editingItem.textoOferta || "🔥 OFERTA"}
+                      onChange={(e) =>
+                        setEditingItem({ ...editingItem, textoOferta: e.target.value })
+                      }
+                    />
+                    <p className="text-[11px] text-amber-700 mt-1">
+                      Este texto aparecerá en una cinta flotante llamativa sobre la foto del producto.
+                    </p>
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Foto del Producto (Ruta, URL o Archivo)
@@ -748,7 +890,7 @@ export default function CatalogAdminPage() {
                 <div className="space-y-2">
                   <input
                     className="w-full border border-slate-300 rounded-lg p-2.5 text-slate-900 bg-white text-xs font-mono"
-                    placeholder="/assets/images/10333.jpeg"
+                    placeholder="/assets/images/10236.jpeg"
                     value={editingItem.foto1 || ""}
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, foto1: e.target.value })
@@ -799,6 +941,11 @@ export default function CatalogAdminPage() {
                         alt="Vista previa"
                         className="max-h-36 max-w-full object-contain rounded"
                       />
+                      {editingItem.esOferta && (
+                        <div className="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded shadow">
+                          {editingItem.textoOferta || "🔥 OFERTA"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (

@@ -134,3 +134,36 @@
         .photo-overlay img {max-width:min(94vw,1000px);max-height:75vh;object-fit:contain;background:white;border-radius:10px;}
         .photo-overlay p {color:white;text-align:center;font-weight:650;}
         #photo-close {position:absolute;right:18px;top:12px;background:transparent;color:white;border:0;font-size:38px;cursor:pointer;}
+
+/* Estilos de Ofertas y Destacados */
+.card.is-oferta {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.16);
+    position: relative;
+}
+.card.is-oferta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.26);
+}
+.badge-oferta {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 9px;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+.price-oferta {
+    color: #dc2626 !important;
+    font-weight: 800;
+}

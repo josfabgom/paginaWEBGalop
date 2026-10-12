@@ -26,6 +26,8 @@ export async function POST(req: Request) {
         categoria: item.categoria,
         precio: item.precio || "Consultar",
         foto1: item.foto1 || null,
+        esOferta: Boolean(item.esOferta),
+        textoOferta: item.textoOferta || (item.esOferta ? "🔥 OFERTA" : null),
       })),
     });
 

@@ -41,6 +41,8 @@ model CatalogItem {
   precio      String?  @default("Consultar")
   foto1       String?
   foto2       String?
+  esOferta    Boolean  @default(false)
+  textoOferta String?  @default("🔥 OFERTA")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

@@ -64,6 +64,7 @@
     function normalizarCategoria(valor) {return String(valor||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();}
     function coincideCategoria(producto, categoria) {
         if(categoria==='TODOS') return true;
+        if(categoria==='OFERTAS') return Boolean(producto.esOferta);
         const cat=normalizarCategoria(producto.categoria);
         const elegido=normalizarCategoria(categoria);
         return cat===elegido || cat.startsWith(elegido+' ') || cat.startsWith(elegido+' -') || cat.startsWith(elegido+':');
@@ -72,15 +73,19 @@
         const panel=document.getElementById('categories-panel');
         const botones=document.getElementById('category-buttons');
         botones.replaceChildren();panel.style.display='block';
-        CATEGORIAS.forEach(c=>{
-            const b=document.createElement('button');b.type='button';b.className='category-btn'+(categoriaActiva===c.id?' active':'');
+        const listaCats = [...CATEGORIAS];
+        if (productosGlobales.some(p => p.esOferta)) {
+            listaCats.splice(1, 0, {id:'OFERTAS', icono:'🔥'});
+        }
+        listaCats.forEach(c=>{
+            const b=document.createElement('button');b.type='button';b.className='category-btn'+(categoriaActiva===c.id?' active':'')+(c.id==='OFERTAS'?' cat-oferta':'');
             b.textContent=c.icono+' '+c.id;b.setAttribute('aria-pressed',String(categoriaActiva===c.id));
             b.addEventListener('click',()=>{categoriaActiva=c.id;dibujarCategorias();filtrarProductos();});botones.appendChild(b);
         });
     }
     function filtrarProductos() {
         const q=document.getElementById('search').value.trim().toLocaleLowerCase('es');
-        const filtrados=productosGlobales.filter(p=>coincideCategoria(p,categoriaActiva) && (!q || [p.descripcion,p.codigo,p.categoria].some(v=>String(v).toLocaleLowerCase('es').includes(q))));
+        const filtrados=productosGlobales.filter(p=>coincideCategoria(p,categoriaActiva) && (!q || [p.descripcion,p.codigo,p.categoria,p.esOferta?'oferta':''].some(v=>String(v).toLocaleLowerCase('es').includes(q))));
         dibujarProductos(filtrados);
     }
     const statusDiv = document.getElementById('status');
@@ -134,7 +139,10 @@
             const seccion = document.createElement('div'); seccion.innerHTML = '<div class="categoria-titulo">' + cat + '</div>';
             const grid = document.createElement('div'); grid.className = 'grid';
             grupos[cat].forEach(p => {
-                const card = document.createElement('div'); card.className = 'card';
+                const esOferta = Boolean(p.esOferta);
+                const textoOferta = p.textoOferta || '🔥 OFERTA';
+                const card = document.createElement('div');
+                card.className = 'card' + (esOferta ? ' is-oferta' : '');
                 const fotos = [mapaImagenes[String(p.codigo).toLowerCase()], mapaImagenes[String(p.codigo).toLowerCase()+'_2']].filter(Boolean);
                 const src = fotos[0] || ""; const cant = carrito[p.codigo] || 0;
                 const precioDisplay = p.precio && p.precio !== 'Consultar' ? (p.precio.startsWith('$') ? p.precio : '$' + p.precio) : 'Consultar';
@@ -146,7 +154,9 @@
                     controlsHtml = `<button class='btn-add-to-quote' id='btn-add-${p.codigo}' onclick="cambiarCantidad('${p.codigo}', 1)">🛒 Agregar a cotización</button>`;
                 }
 
-                card.innerHTML = `<div class='img-container'><img src='${src}' style='${src ? "" : "display:none;"}' alt='${p.descripcion}'><div style='${src ? "display:none;" : "display:block;"} color:#94a3b8; font-weight:bold; font-size:14px;'>📦 Sin Foto</div></div><div class='card-body'><h3>${p.descripcion}</h3><div class='card-meta-row'><span class='code'>Cód: ${p.codigo}</span><span class='price'>${precioDisplay}</span></div><div class='cart-action-box' id='box-${p.codigo}'>${controlsHtml}</div></div>`;
+                const badgeHtml = esOferta ? `<div class='badge-oferta'><span>${textoOferta}</span></div>` : '';
+
+                card.innerHTML = `<div class='img-container'>${badgeHtml}<img src='${src}' style='${src ? "" : "display:none;"}' alt='${p.descripcion}'><div style='${src ? "display:none;" : "display:block;"} color:#94a3b8; font-weight:bold; font-size:14px;'>📦 Sin Foto</div></div><div class='card-body'><h3>${p.descripcion}</h3><div class='card-meta-row'><span class='code'>Cód: ${p.codigo}</span><span class='price ${esOferta ? "price-oferta" : ""}'>${precioDisplay}</span></div><div class='cart-action-box' id='box-${p.codigo}'>${controlsHtml}</div></div>`;
                 if(fotos.length){
                     const cont=card.querySelector('.img-container'), foto=cont.querySelector('img'); let indice=0;
                     foto.classList.add('zoomable');foto.title='Ver imagen ampliada';foto.alt=p.descripcion;
