@@ -187,18 +187,52 @@
 
         const searchQuery = document.getElementById('search').value.trim();
 
-        // Si estamos en TODOS y sin búsqueda, mostrar sección destacada arriba con las ofertas
+        // Si estamos en TODOS y sin búsqueda, mostrar carrusel destacado arriba con las ofertas
         if (categoriaActiva === 'TODOS' && !searchQuery) {
             const ofertas = prods.filter(p => p.esOferta);
             if (ofertas.length > 0) {
                 const seccionOfertas = document.createElement('div');
-                seccionOfertas.innerHTML = '<div class="categoria-titulo titulo-ofertas">🔥 OFERTAS DESTACADAS</div>';
-                const gridOfertas = document.createElement('div');
-                gridOfertas.className = 'grid';
+                seccionOfertas.className = 'ofertas-carousel-container';
+
+                const header = document.createElement('div');
+                header.className = 'ofertas-carousel-header';
+                const cantTexto = ofertas.length === 1 ? '1 oferta' : `${ofertas.length} ofertas`;
+                header.innerHTML = `
+                    <div class="categoria-titulo titulo-ofertas">
+                        🔥 OFERTAS DESTACADAS
+                        <span class="ofertas-badge-count">${cantTexto}</span>
+                    </div>
+                    <div class="carousel-nav-buttons" ${ofertas.length <= 1 ? 'style="display:none;"' : ''}>
+                        <button class="carousel-btn prev" type="button" aria-label="Oferta anterior">❮</button>
+                        <button class="carousel-btn next" type="button" aria-label="Siguiente oferta">❯</button>
+                    </div>
+                `;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ofertas-carousel-wrapper';
+
+                const track = document.createElement('div');
+                track.className = 'ofertas-carousel-track';
+
                 ofertas.forEach(p => {
-                    gridOfertas.appendChild(crearCardProducto(p));
+                    const card = crearCardProducto(p);
+                    track.appendChild(card);
                 });
-                seccionOfertas.appendChild(gridOfertas);
+
+                const btnPrev = header.querySelector('.carousel-btn.prev');
+                const btnNext = header.querySelector('.carousel-btn.next');
+                if (btnPrev && btnNext) {
+                    btnPrev.addEventListener('click', () => {
+                        track.scrollBy({ left: -280, behavior: 'smooth' });
+                    });
+                    btnNext.addEventListener('click', () => {
+                        track.scrollBy({ left: 280, behavior: 'smooth' });
+                    });
+                }
+
+                wrapper.appendChild(track);
+                seccionOfertas.appendChild(header);
+                seccionOfertas.appendChild(wrapper);
                 container.appendChild(seccionOfertas);
             }
         }
