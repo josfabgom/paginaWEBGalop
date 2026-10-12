@@ -167,3 +167,26 @@
     color: #dc2626 !important;
     font-weight: 800;
 }
+.categoria-titulo.titulo-ofertas {
+    color: #dc2626;
+    border-bottom: 2px solid #fecaca;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.category-btn.cat-oferta {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    color: #b45309;
+    font-weight: 800;
+}
+.category-btn.cat-oferta:hover {
+    background: #fef3c7;
+    border-color: #d97706;
+}
+.category-btn.cat-oferta.active {
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    border-color: #dc2626;
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35);
+}
