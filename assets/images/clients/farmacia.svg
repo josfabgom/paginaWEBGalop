@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 52" width="160" height="52">
+  <g transform="translate(6, 6)">
+    <!-- Cross / Health Icon -->
+    <rect x="0" y="4" width="34" height="32" rx="8" fill="#0284C7" />
+    <path d="M14 11 h6 v5 h5 v6 h-5 v5 h-6 v-5 h-5 v-6 h5 z" fill="#FFFFFF" />
+    <!-- Text -->
+    <text x="42" y="22" font-family="'Poppins', sans-serif" font-weight="800" font-size="14" fill="#0F172A">FARMACIAS</text>
+    <text x="43" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="7.5" fill="#0284C7" letter-spacing="1">SALUD &amp; DROGUERÍAS</text>
+  </g>
+</svg>

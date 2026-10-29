@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Personal & Gestión - GaLop S.R.L.</title>
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --danger: #ef4444;
+      --success: #10b981;
+      --amber: #f59e0b;
+      --dark-navy: #0b2545;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; }
+
+    /* --- PANTALLA DE LOGIN --- */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 10%, #1e3a8a 0%, #0b2545 60%, #071527 100%);
+    }
+    .login-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+    }
+    .login-logo {
+      height: 48px;
+      margin-bottom: 18px;
+      object-fit: contain;
+    }
+    .login-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      border: 1px solid #bfdbfe;
+    }
+    .login-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0b2545;
+      margin-bottom: 6px;
+    }
+    .login-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+      line-height: 1.45;
+    }
+    .login-field {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .login-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .login-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .login-input {
+      width: 100%;
+      padding: 12px 44px 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #f8fafc;
+      transition: all 0.2s;
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+    }
+    .toggle-pass-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.15rem;
+      color: #94a3b8;
+    }
+    .login-error {
+      display: none;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 18px;
+      font-weight: 600;
+      text-align: left;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--primary);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+    .login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+    }
+    .login-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .login-back-btn:hover {
+      color: var(--primary);
+    }
+    .login-hint {
+      margin-top: 14px;
+      font-size: 0.76rem;
+      color: #94a3b8;
+    }
+
+    /* --- PORTAL PRINCIPAL --- */
+    #portal-dashboard {
+      display: none;
+      padding-bottom: 60px;
+    }
+
+    /* Navbar del Portal */
+    .portal-navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .portal-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .portal-brand img {
+      height: 38px;
+    }
+    .portal-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .portal-brand-title {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #0b2545;
+    }
+    .portal-brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .portal-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-portal-action {
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-portal-action:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+    .btn-logout {
+      background: #fef2f2;
+      border-color: #fee2e2;
+      color: #dc2626;
+    }
+    .btn-logout:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Tabs de Navegación del Portal */
+    .portal-tabs-bar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .portal-tab-btn {
+      padding: 14px 18px;
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .portal-tab-btn:hover {
+      color: var(--primary);
+      background: #f8fafc;
+    }
+    .portal-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 28px auto;
+      padding: 0 24px;
+    }
+
+    /* Modulos */
+    .portal-module {
+      display: none;
+    }
+    .portal-module.active {
+      display: block;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0b2545;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-val {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #0b2545;
+      margin-top: 4px;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group.col-full {
+      grid-column: 1 / -1;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+    }
+    .form-control {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #f8fafc;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #059669; }
+    .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-danger { background: #fee2e2; color: #b91c1c; }
+    .btn-danger:hover { background: #fecaca; }
+
+    /* Actions toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .toolbar-left, .toolbar-right { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Filter pills */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 20px; }
+    .search-input { min-width: 280px; flex: 1; }
+    .cat-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill:hover { background: #e2e8f0; }
+    .pill.active { background: #0b2545; color: white; border-color: #0b2545; }
+    .pill.pill-oferta { border-color: #fca5a5; color: #dc2626; }
+    .pill.pill-oferta.active { background: #dc2626; color: white; border-color: #dc2626; }
+
+    /* Table */
+    .table-container {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 14px 16px; font-size: 0.9rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background-color: #f8fafc; }
+    .thumb { width: 44px; height: 44px; border-radius: 6px; object-fit: contain; background: #ffffff; border: 1px solid #e2e8f0; }
+    .code-badge { background: #f1f5f9; color: #475569; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; font-family: monospace; }
+    .badge-oferta-table {
+      display: inline-block;
+      background: #fee2e2;
+      color: #dc2626;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* Clientes Cards Grid en pestaña */
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .client-admin-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+    .client-admin-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .client-admin-logo {
+      height: 40px;
+      max-width: 120px;
+      object-fit: contain;
+    }
+
+    /* Sistemas Cards Grid en pestaña */
+    .systems-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .system-admin-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .system-admin-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .system-admin-icon {
+      font-size: 1.8rem;
+      width: 48px;
+      height: 48px;
+      background: #eff6ff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .system-admin-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid #bfdbfe;
+    }
+    .system-admin-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0b2545;
+    }
+    .system-admin-desc {
+      font-size: 0.86rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .system-admin-features {
+      list-style: none;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: #334155;
+    }
+    .system-admin-features li span {
+      color: var(--primary);
+      font-weight: bold;
+    }
+    .system-admin-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 26px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 1.25rem; font-weight: 700; color: #0b2545; }
+    .modal-close { background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0b2545;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+      font-size: 0.92rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.3s;
+      z-index: 3000;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================== -->
+  <!-- 1. PANTALLA DE ACCESO POR CONTRASEÑA           -->
+  <!-- ============================================== -->
+  <div class="login-wrapper" id="login-screen">
+    <div class="login-card">
+      <img src="/assets/images/logo.png" alt="GaLop S.R.L." class="login-logo">
+      <div class="login-badge">
+        <span>🔐 Portal Personal / ABM</span>
+      </div>
+      <h1 class="login-title">Acceso Restringido</h1>
+      <p class="login-sub">Ingrese la contraseña de seguridad para gestionar el catálogo de productos y el contenido de la web.</p>
+
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="login-field">
+          <label class="login-label">Contraseña de Administrador</label>
+          <div class="login-input-box">
+            <input type="password" id="login-password" class="login-input" placeholder="••••••••" required autofocus>
+            <button type="button" class="toggle-pass-btn" onclick="togglePasswordVisibility('login-password')">👁️</button>
+          </div>
+        </div>
+
+        <div class="login-error" id="login-error">
+          ⚠️ Contraseña incorrecta. Por favor intente de nuevo.
+        </div>
+
+        <button type="submit" class="login-btn" id="login-btn">
+          <span>Ingresar al Portal →</span>
+        </button>
+      </form>
+
+      <div class="login-hint">
+        Contraseña por defecto inicial: <strong>galop2026</strong>
+      </div>
+
+      <a href="/" class="login-back-btn">
+        <span>⬅ Volver al Sitio Web Principal</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- 2. PORTAL PERSONAL (AUTENTICADO)              -->
+  <!-- ============================================== -->
+  <div id="portal-dashboard">
+
+    <!-- Navbar del Portal -->
+    <header class="portal-navbar">
+      <a href="/portal" class="portal-brand">
+        <img src="/assets/images/logo.png" alt="GaLop S.R.L.">
+        <div class="portal-brand-text">
+          <span class="portal-brand-title">Portal Personal GaLop</span>
+          <span class="portal-brand-sub">Sistema de Gestión & CMS</span>
+        </div>
+      </a>
+      <div class="portal-actions">
+        <a href="/login?callbackUrl=/dashboard" target="_blank" class="btn-portal-action" style="background: rgba(37, 99, 235, 0.25); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4);">
+          <span>📊 Sistema GestionQ ↗</span>
+        </a>
+        <a href="/productos" target="_blank" class="btn-portal-action">
+          <span>🛍️ Catálogo Web</span>
+        </a>
+        <a href="/" target="_blank" class="btn-portal-action">
+          <span>🌐 Ver Sitio Web</span>
+        </a>
+        <button class="btn-portal-action btn-logout" onclick="handleLogout()">
+          <span>🚪 Cerrar Sesión</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Barra de Pestañas de Navegación -->
+    <nav class="portal-tabs-bar">
+      <button class="portal-tab-btn active" id="tab-btn-catalog" onclick="switchPortalTab('catalog')">
+        🛍️ Catálogo de Productos
+      </button>
+      <button class="portal-tab-btn" id="tab-btn-cms" onclick="switchPortalTab('cms')">
+        🌐 Contenido de la Página Web
+      </button>
+      <button class="portal-tab-btn" id="tab-btn-systems" onclick="switchPortalTab('systems')">
+        💻 Sistemas & Software a Medida
+      </button>
+      <button class="portal-tab-btn" id="tab-btn-clients" onclick="switchPortalTab('clients')">
+        🏢 Gestión de Clientes & Logos
+      </button>
+      <button class="portal-tab-btn" id="tab-btn-security" onclick="switchPortalTab('security')">
+        🔐 Seguridad & Contraseña
+      </button>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container">
+
+      <!-- ========================================== -->
+      <!-- MODULO 1: CATÁLOGO DE PRODUCTOS (ABM)     -->
+      <!-- ========================================== -->
+      <section class="portal-module active" id="mod-catalog">
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Total Productos</span>
+            <span class="stat-val" id="stat-total">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Ofertas Destacadas</span>
+            <span class="stat-val" style="color: #dc2626;" id="stat-ofertas">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Categorías Activas</span>
+            <span class="stat-val" id="stat-categorias">0</span>
+          </div>
+        </div>
+
+        <!-- Actions Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button class="btn btn-primary" onclick="openProductModal()">➕ Nuevo Producto</button>
+            <button class="btn btn-success" onclick="document.getElementById('excel-file-input').click()">📥 Importar Excel / CSV</button>
+            <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" style="display:none;" onchange="handleExcelUpload(event)">
+            <button class="btn btn-secondary" onclick="downloadExcelTemplate()">📄 Descargar Plantilla Excel</button>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn btn-secondary" onclick="exportJson()">📦 Exportar JSON</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('json-file-input').click()">📥 Importar JSON</button>
+            <input type="file" id="json-file-input" accept=".json" style="display:none;" onchange="handleJsonUpload(event)">
+          </div>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="filter-bar">
+          <input type="text" id="search-box" class="form-control search-input" placeholder="🔍 Buscar por código, descripción o categoría..." oninput="renderTable()">
+          <div class="cat-pills" id="category-pills"></div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px;">Foto</th>
+                <th style="width: 110px;">Código</th>
+                <th>Descripción</th>
+                <th style="width: 180px;">Categoría</th>
+                <th style="width: 130px;">Precio</th>
+                <th style="width: 140px;">Oferta</th>
+                <th style="width: 140px; text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- MODULO 2: CONTENIDO DE LA PÁGINA WEB (CMS) -->
+      <!-- ========================================== -->
+      <section class="portal-module" id="mod-cms">
+        
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">🌐 Textos Principales de la Página de Inicio (Hero)</h2>
+              <p class="card-sub">Modifique el mensaje principal que ven los clientes al entrar a la web.</p>
+            </div>
+            <button class="btn btn-primary" onclick="saveWebContent()">💾 Guardar Contenido Web</button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label>Etiqueta Superior de Portada</label>
+              <input type="text" id="cms-hero-tag" class="form-control" placeholder="Insumos Comerciales & Servicio Técnico Homologado">
+            </div>
+
+            <div class="form-group col-full">
+              <label>Título Principal de Portada</label>
+              <textarea id="cms-hero-titulo" class="form-control" rows="2" placeholder="Soluciones Integrales en Insumos y Equipamiento para tu Comercio o Empresa"></textarea>
+            </div>
+
+            <div class="form-group col-full">
+              <label>Subtítulo Explicativo</label>
+              <textarea id="cms-hero-sub" class="form-control" rows="3" placeholder="Proveemos rollos térmicos, tóner de alta calidad, papelería y equipamiento..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Texto Botón Primario</label>
+              <input type="text" id="cms-hero-btn1" class="form-control" placeholder="🛍️ Explorar Catálogo de Insumos">
+            </div>
+
+            <div class="form-group">
+              <label>Texto Botón Secundario</label>
+              <input type="text" id="cms-hero-btn2" class="form-control" placeholder="🔧 Solicitar Servicio Técnico">
+            </div>
+          </div>
+        </div>
+
+        <!-- Contacto y Datos de Empresa -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">📍 Datos Comerciales de Contacto & Ubicación</h2>
+              <p class="card-sub">Estos datos se sincronizan en la barra superior, pie de página y botones de WhatsApp.</p>
+            </div>
+            <button class="btn btn-primary" onclick="saveWebContent()">💾 Guardar Datos</button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Teléfono Visible (con formato)</label>
+              <input type="text" id="cms-contacto-tel" class="form-control" placeholder="+54 9 376 522-4717">
+            </div>
+
+            <div class="form-group">
+              <label>Número WhatsApp para Enlace (sólo números con código país)</label>
+              <input type="text" id="cms-contacto-wa" class="form-control" placeholder="5493765224717">
+            </div>
+
+            <div class="form-group">
+              <label>Correo Electrónico Comercial</label>
+              <input type="email" id="cms-contacto-email" class="form-control" placeholder="galopsrl@gmail.com">
+            </div>
+
+            <div class="form-group">
+              <label>Ubicación / Ciudad</label>
+              <input type="text" id="cms-contacto-dir" class="form-control" placeholder="Posadas, Misiones, Argentina">
+            </div>
+
+            <div class="form-group col-full">
+              <label>Horario de Atención Comercial</label>
+              <input type="text" id="cms-contacto-horario" class="form-control" placeholder="Posadas, Misiones · Lun a Vie 8:00 - 18:00 hs">
+            </div>
+
+            <div class="form-group col-full">
+              <label>Título Banner de Llamada a la Acción (Final de página)</label>
+              <input type="text" id="cms-banner-titulo" class="form-control" placeholder="¿Listo para optimizar los insumos o reparar tus equipos?">
+            </div>
+
+            <div class="form-group col-full">
+              <label>Descripción del Banner</label>
+              <textarea id="cms-banner-desc" class="form-control" rows="2" placeholder="Comunicate hoy mismo con nuestro equipo de atención comercial..."></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- MODULO: SISTEMAS & SOFTWARE A MEDIDA      -->
+      <!-- ========================================== -->
+      <section class="portal-module" id="mod-systems">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">💻 Líneas de Sistemas & Software a Medida</h2>
+              <p class="card-sub">Gestione los sistemas y plataformas mostradas en la sección "Sistemas a Medida" de la Home.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openNewSystemModal()">➕ Nuevo Sistema</button>
+          </div>
+
+          <div class="systems-admin-grid" id="systems-cards-container">
+            <!-- Se carga dinámicamente desde /api/sistemas -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- MODULO 3: GESTIÓN DE CLIENTES & LOGOS     -->
+      <!-- ========================================== -->
+      <section class="portal-module" id="mod-clients">
+        
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">🏢 Empresas y Clientes de la Home</h2>
+              <p class="card-sub">Gestione los clientes que se muestran en el carrusel de confianza de la página principal.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openNewClientModal()">➕ Agregar Nuevo Cliente</button>
+          </div>
+
+          <div class="clients-grid" id="clients-cards-container">
+            <!-- Se carga dinámicamente -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- MODULO 4: SEGURIDAD & CONTRASEÑA           -->
+      <!-- ========================================== -->
+      <section class="portal-module" id="mod-security">
+        
+        <div class="card" style="max-width: 600px;">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">🔑 Cambiar Contraseña del Portal Personal</h2>
+              <p class="card-sub">Actualice su clave de acceso para proteger el portal administrativo.</p>
+            </div>
+          </div>
+
+          <form onsubmit="handleChangePassword(event)" style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="form-group">
+              <label>Contraseña Actual *</label>
+              <input type="password" id="pass-current" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+              <label>Nueva Contraseña (mínimo 4 caracteres) *</label>
+              <input type="password" id="pass-new" class="form-control" required minlength="4" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+              <label>Confirmar Nueva Contraseña *</label>
+              <input type="password" id="pass-confirm" class="form-control" required minlength="4" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+              💾 Actualizar Contraseña
+            </button>
+          </form>
+        </div>
+
+        <div class="card" style="max-width: 600px;">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">👤 Asesor Comercial & Vendedor (Catálogo)</h2>
+              <p class="card-sub">Configuración de la persona de contacto en el catálogo.</p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="form-group">
+              <label>Nombre del Asesor</label>
+              <input type="text" id="set-nombre" class="form-control" placeholder="GaLop S.R.L.">
+            </div>
+            <div class="form-group">
+              <label>Cargo / Rol</label>
+              <input type="text" id="set-rol" class="form-control" placeholder="Ventas - Servicio Técnico">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp del Asesor (ej: 5493765224717)</label>
+              <input type="text" id="set-phone" class="form-control" placeholder="5493765224717">
+            </div>
+            <div class="form-group">
+              <label>Categoría Inicial en Catálogo</label>
+              <input type="text" id="set-cat" class="form-control" placeholder="TODOS">
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">💾 Guardar Datos del Asesor</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- MODALES DE EDICIÓN                            -->
+  <!-- ============================================== -->
+
+  <!-- Modal Producto -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title" id="modal-title">Editar Producto</h3>
+        <button class="modal-close" onclick="closeProductModal()">×</button>
+      </div>
+      <form id="product-form" onsubmit="saveProductForm(event)">
+        <input type="hidden" id="prod-id">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="form-group">
+            <label>Código de Barras / Artículo *</label>
+            <input type="text" id="prod-codigo" class="form-control" required placeholder="Ej: 10333">
+          </div>
+          <div class="form-group">
+            <label>Descripción del Producto *</label>
+            <input type="text" id="prod-desc" class="form-control" required placeholder="Ej: SOBRES MANILA 2629 27X37X100">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <input type="text" id="prod-cat" class="form-control" list="cat-suggestions" placeholder="Ej: LIBRERÍA, TÓNER, ROLLOS...">
+            <datalist id="cat-suggestions">
+              <option value="LIBRERÍA"></option>
+              <option value="TÓNER"></option>
+              <option value="ROLLOS"></option>
+              <option value="EQUIPAMIENTO"></option>
+              <option value="COMPUTACIÓN"></option>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label>Precio (Formato: $ 12.345 o Consultar)</label>
+            <input type="text" id="prod-precio" class="form-control" placeholder="$ 15.000">
+          </div>
+
+          <!-- Oferta Switch -->
+          <div style="background: #fef2f2; border: 1px solid #fee2e2; border-radius: 10px; padding: 14px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #dc2626; cursor: pointer;">
+              <input type="checkbox" id="prod-oferta" onchange="toggleOfertaFields(this.checked)" style="width: 18px; height: 18px;">
+              🔥 Marcar como OFERTA DESTACADA
+            </label>
+            <div id="oferta-details" style="display: none; margin-top: 10px;">
+              <label style="font-size: 0.82rem; font-weight: 600; color: #991b1b; display: block; margin-bottom: 4px;">Texto de la Oferta / Etiqueta</label>
+              <input type="text" id="prod-texto-oferta" class="form-control" placeholder="Ej: 🔥 20% OFF o SUPER PROMO">
+            </div>
+          </div>
+
+          <!-- Fotos -->
+          <div class="form-group">
+            <label>URL Foto Principal</label>
+            <input type="text" id="prod-foto1" class="form-control" placeholder="assets/images/10333.jpeg">
+          </div>
+          <div class="form-group">
+            <label>Subir Foto desde Computadora</label>
+            <input type="file" id="prod-file" accept="image/*" class="form-control" onchange="handleImageUpload(event)">
+          </div>
+          <div style="text-align: center; margin-top: 6px;">
+            <img id="prod-preview" src="/assets/images/logo.png" style="max-height: 100px; border-radius: 8px; border: 1px solid #e2e8f0; padding: 4px;">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Cliente -->
+  <div class="modal-overlay" id="client-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title" id="client-modal-title">Agregar / Editar Cliente</h3>
+        <button class="modal-close" onclick="closeClientModal()">×</button>
+      </div>
+      <form onsubmit="saveClientModalForm(event)">
+        <input type="hidden" id="modal-client-id">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="form-group">
+            <label>Nombre de la Empresa o Cliente *</label>
+            <input type="text" id="modal-client-nombre" class="form-control" required placeholder="Ej: Supermercados California">
+          </div>
+          <div class="form-group">
+            <label>Rubro o Sector Comercial *</label>
+            <input type="text" id="modal-client-rubro" class="form-control" required placeholder="Ej: Retail & Supermercados">
+          </div>
+          <div class="form-group">
+            <label>Servicio / Solución que le brinda GaLop</label>
+            <textarea id="modal-client-servicio" class="form-control" rows="2" placeholder="Provisión mensual de rollos térmicos y soporte de controladores fiscales"></textarea>
+          </div>
+          <div class="form-group">
+            <label>URL del Logotipo (SVG, PNG, JPG)</label>
+            <input type="text" id="modal-client-logo-url" class="form-control" placeholder="/assets/images/clients/supermercado.svg">
+          </div>
+          <div class="form-group">
+            <label>O subir archivo de logo</label>
+            <input type="file" accept="image/*" class="form-control" onchange="handleClientLogoFile(event)">
+          </div>
+          <div style="text-align: center; margin-top: 6px; padding: 10px; background: #f8fafc; border-radius: 10px;">
+            <span style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 4px;">Vista previa del logo:</span>
+            <img id="modal-client-logo-prev" src="/assets/images/logo.png" style="max-height: 48px; max-width: 160px; object-fit: contain;">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeClientModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Sistema a Medida -->
+  <div class="modal-overlay" id="system-modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title" id="system-modal-title">Agregar / Editar Sistema</h3>
+        <button class="modal-close" onclick="closeSystemModal()">×</button>
+      </div>
+      <form onsubmit="saveSystemModalForm(event)">
+        <input type="hidden" id="modal-sys-id">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Ícono</label>
+              <input type="text" id="modal-sys-icono" class="form-control" style="text-align: center; font-size: 1.4rem;" value="💻" required>
+            </div>
+            <div class="form-group">
+              <label>Etiqueta / Badge *</label>
+              <input type="text" id="modal-sys-badge" class="form-control" required placeholder="Ej: Facturación & POS">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Título del Sistema *</label>
+            <input type="text" id="modal-sys-titulo" class="form-control" required placeholder="Ej: Sistemas de Gestión Comercial & Puntos de Venta">
+          </div>
+
+          <div class="form-group">
+            <label>Descripción General *</label>
+            <textarea id="modal-sys-desc" class="form-control" rows="2" required placeholder="Software integral para ventas de mostrador, control de cajas..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Características Destacadas (Viñetas de la tarjeta)</label>
+            <input type="text" id="modal-sys-f1" class="form-control" placeholder="Viñeta 1: Emisión de tickets en controladores fiscales" style="margin-bottom: 6px;">
+            <input type="text" id="modal-sys-f2" class="form-control" placeholder="Viñeta 2: Listas de precios múltiples y cuentas corrientes" style="margin-bottom: 6px;">
+            <input type="text" id="modal-sys-f3" class="form-control" placeholder="Viñeta 3: Reportes gerenciales de rentabilidad en tiempo real">
+          </div>
+
+          <div class="form-group">
+            <label>Texto del Botón de Acción (WhatsApp / Consulta)</label>
+            <input type="text" id="modal-sys-btn" class="form-control" placeholder="Solicitar demo comercial →">
+          </div>
+
+          <div class="form-group">
+            <label>Mensaje Pre-completado de WhatsApp</label>
+            <input type="text" id="modal-sys-wa" class="form-control" placeholder="Hola GaLop, quisiera consultar por el sistema de...">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.78rem;">Enlace Directo de Acceso / Login (Opcional)</label>
+              <input type="text" id="modal-sys-login-url" class="form-control" placeholder="Ej: /login?callbackUrl=/dashboard">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.78rem;">Texto Botón de Acceso (Opcional)</label>
+              <input type="text" id="modal-sys-login-btn" class="form-control" placeholder="Ej: 🔐 Iniciar Sesión GestionQ →">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeSystemModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Sistema</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">✅ Acción realizada con éxito</div>
+
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT DEL PORTAL PERSONAL                -->
+  <!-- ============================================== -->
+  <script>
+    let authToken = sessionStorage.getItem('galop_admin_token') || null;
+    let products = [];
+    let settings = {};
+    let webContent = {};
+    let clients = [];
+    let sistemas = [];
+    let activeCategory = 'TODAS';
+
+    // Helper de fetch autenticado
+    function authFetch(url, options = {}) {
+      options.headers = options.headers || {};
+      if (authToken) {
+        options.headers['Authorization'] = 'Bearer ' + authToken;
+        options.headers['X-Admin-Token'] = authToken;
+      }
+      return fetch(url, options);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    // Toggle ver contraseña
+    function togglePasswordVisibility(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.type = field.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    // --- AUTENTICACIÓN ---
+    async function checkAuth() {
+      try {
+        const res = await authFetch('/api/auth/status');
+        const data = await res.json();
+        if (data.success && data.authenticated) {
+          showDashboard();
+        } else {
+          showLogin();
+        }
+      } catch (e) {
+        showLogin();
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('portal-dashboard').style.display = 'none';
+      document.getElementById('login-password').focus();
+    }
+
+    function showDashboard() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('portal-dashboard').style.display = 'block';
+      loadAllPortalData();
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const pass = document.getElementById('login-password').value.trim();
+      const errEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      errEl.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Verificando...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pass })
+        });
+        const d = await res.json();
+        if (d.success && d.token) {
+          authToken = d.token;
+          sessionStorage.setItem('galop_admin_token', d.token);
+          showDashboard();
+        } else {
+          errEl.style.display = 'block';
+          errEl.textContent = '⚠️ ' + (d.error || 'Contraseña incorrecta');
+        }
+      } catch (err) {
+        errEl.style.display = 'block';
+        errEl.textContent = '⚠️ Error de conexión con el servidor local';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Ingresar al Portal →';
+      }
+    }
+
+    async function handleLogout() {
+      if (!confirm('¿Deseas cerrar tu sesión del Portal Personal?')) return;
+      try {
+        await authFetch('/api/auth/logout', { method: 'POST' });
+      } catch (e) {}
+      authToken = null;
+      sessionStorage.removeItem('galop_admin_token');
+      document.getElementById('login-password').value = '';
+      showLogin();
+      showToast('Sesión finalizada');
+    }
+
+    async function handleChangePassword(e) {
+      e.preventDefault();
+      const cur = document.getElementById('pass-current').value;
+      const n1 = document.getElementById('pass-new').value;
+      const n2 = document.getElementById('pass-confirm').value;
+
+      if (n1 !== n2) {
+        alert('La nueva contraseña y su confirmación no coinciden.');
+        return;
+      }
+      try {
+        const res = await authFetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currentPassword: cur, newPassword: n1 })
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast('✅ Contraseña actualizada con éxito');
+          document.getElementById('pass-current').value = '';
+          document.getElementById('pass-new').value = '';
+          document.getElementById('pass-confirm').value = '';
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (err) {
+        alert('Error cambiando contraseña');
+      }
+    }
+
+    // --- PESTAÑAS DEL PORTAL ---
+    function switchPortalTab(tabKey) {
+      document.querySelectorAll('.portal-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.portal-module').forEach(m => m.classList.remove('active'));
+
+      const btn = document.getElementById('tab-btn-' + tabKey);
+      const mod = document.getElementById('mod-' + tabKey);
+      if (btn) btn.classList.add('active');
+      if (mod) mod.classList.add('active');
+
+      if (tabKey === 'cms') loadWebContent();
+      if (tabKey === 'systems') loadSistemas();
+      if (tabKey === 'clients') loadClients();
+    }
+
+    // --- CARGA DE DATOS GENERALES ---
+    async function loadAllPortalData() {
+      loadCatalog();
+      loadWebContent();
+      loadSistemas();
+      loadClients();
+    }
+
+    // --- MODULO 1: CATALOGO ---
+    async function loadCatalog() {
+      try {
+        const res = await fetch('/api/catalog');
+        const data = await res.json();
+        if (data.success) {
+          products = data.items || [];
+          settings = data.settings || {};
+          populateSettings();
+          renderStats();
+          renderCategoryPills();
+          renderTable();
+        }
+      } catch (e) {
+        console.error('Error cargando catalogo:', e);
+      }
+    }
+
+    function populateSettings() {
+      document.getElementById('set-nombre').value = settings.vendedorNombre || '';
+      document.getElementById('set-rol').value = settings.vendedorRol || '';
+      document.getElementById('set-phone').value = settings.vendedorPhone || '';
+      document.getElementById('set-cat').value = settings.categoriaInicial || 'TODOS';
+    }
+
+    async function saveSettings() {
+      const payload = {
+        vendedorNombre: document.getElementById('set-nombre').value.trim(),
+        vendedorRol: document.getElementById('set-rol').value.trim(),
+        vendedorPhone: document.getElementById('set-phone').value.trim(),
+        categoriaInicial: document.getElementById('set-cat').value.trim()
+      };
+      try {
+        const res = await authFetch('/api/catalog/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          settings = d.settings;
+          showToast('✅ Datos del asesor guardados');
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (e) {
+        showToast('Error guardando asesor');
+      }
+    }
+
+    function renderStats() {
+      document.getElementById('stat-total').textContent = products.length;
+      document.getElementById('stat-ofertas').textContent = products.filter(p => p.esOferta).length;
+      const cats = new Set(products.map(p => (p.categoria || '').toUpperCase()).filter(Boolean));
+      document.getElementById('stat-categorias').textContent = cats.size;
+    }
+
+    function renderCategoryPills() {
+      const container = document.getElementById('category-pills');
+      container.innerHTML = '';
+      const cats = new Set();
+      products.forEach(p => { if (p.categoria) cats.add(p.categoria.toUpperCase()); });
+      const list = ['TODAS', 'OFERTAS', ...Array.from(cats).sort()];
+
+      list.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pill' + (activeCategory === cat ? ' active' : '') + (cat === 'OFERTAS' ? ' pill-oferta' : '');
+        btn.textContent = cat === 'OFERTAS' ? '🔥 Ofertas' : cat;
+        btn.onclick = () => {
+          activeCategory = cat;
+          renderCategoryPills();
+          renderTable();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('products-tbody');
+      tbody.innerHTML = '';
+      const q = document.getElementById('search-box').value.toLowerCase().trim();
+
+      const filtered = products.filter(p => {
+        const matchCat = activeCategory === 'TODAS'
+          ? true
+          : activeCategory === 'OFERTAS'
+          ? Boolean(p.esOferta)
+          : (p.categoria || '').toUpperCase() === activeCategory;
+
+        const matchSearch = !q ||
+          String(p.codigo || '').toLowerCase().includes(q) ||
+          String(p.descripcion || '').toLowerCase().includes(q) ||
+          String(p.categoria || '').toLowerCase().includes(q);
+
+        return matchCat && matchSearch;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 30px;">No se encontraron productos.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const tr = document.createElement('tr');
+        const imgSrc = p.foto1 || `/assets/images/${p.codigo}.jpeg`;
+        const ofertaHtml = p.esOferta
+          ? `<span class="badge-oferta-table">${p.textoOferta || '🔥 OFERTA'}</span>`
+          : '<span style="color: #cbd5e1;">—</span>';
+
+        tr.innerHTML = `
+          <td><img src="${imgSrc}" class="thumb" onerror="this.src='/assets/images/logo.png'"></td>
+          <td><span class="code-badge">${p.codigo}</span></td>
+          <td style="font-weight: 600; color: #0b2545;">${p.descripcion}</td>
+          <td><span style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 500;">${p.categoria || '—'}</span></td>
+          <td style="font-weight: 700; color: ${p.esOferta ? '#dc2626' : '#2563eb'};">${p.precio || 'Consultar'}</td>
+          <td>${ofertaHtml}</td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="editProduct('${p.id || p.codigo}')">✏️ Editar</button>
+            <button class="btn btn-danger" style="padding: 6px 10px; font-size: 0.8rem;" onclick="deleteProduct('${p.id || p.codigo}')">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Modal Producto
+    function openProductModal(prod = null) {
+      document.getElementById('modal-title').textContent = prod ? 'Editar Producto' : 'Nuevo Producto';
+      document.getElementById('prod-id').value = prod?.id || '';
+      document.getElementById('prod-codigo').value = prod?.codigo || '';
+      document.getElementById('prod-desc').value = prod?.descripcion || '';
+      document.getElementById('prod-cat').value = prod?.categoria || 'LIBRERÍA';
+      document.getElementById('prod-precio').value = prod?.precio || '';
+      document.getElementById('prod-oferta').checked = Boolean(prod?.esOferta);
+      document.getElementById('prod-texto-oferta').value = prod?.textoOferta || '🔥 OFERTA';
+      document.getElementById('prod-foto1').value = prod?.foto1 || '';
+      document.getElementById('prod-preview').src = prod?.foto1 || (prod?.codigo ? `/assets/images/${prod.codigo}.jpeg` : '/assets/images/logo.png');
+      toggleOfertaFields(Boolean(prod?.esOferta));
+      document.getElementById('product-modal').classList.add('open');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.remove('open');
+    }
+
+    function toggleOfertaFields(isChecked) {
+      document.getElementById('oferta-details').style.display = isChecked ? 'block' : 'none';
+    }
+
+    function handleImageUpload(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const dataUrl = evt.target.result;
+        document.getElementById('prod-preview').src = dataUrl;
+        document.getElementById('prod-foto1').value = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function saveProductForm(e) {
+      e.preventDefault();
+      const payload = {
+        id: document.getElementById('prod-id').value || undefined,
+        codigo: document.getElementById('prod-codigo').value.trim(),
+        descripcion: document.getElementById('prod-desc').value.trim(),
+        categoria: document.getElementById('prod-cat').value.trim(),
+        precio: document.getElementById('prod-precio').value.trim(),
+        esOferta: document.getElementById('prod-oferta').checked,
+        textoOferta: document.getElementById('prod-texto-oferta').value.trim(),
+        foto1: document.getElementById('prod-foto1').value.trim() || undefined
+      };
+
+      try {
+        const res = await authFetch('/api/catalog/item', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast('✅ Producto guardado correctamente');
+          closeProductModal();
+          loadCatalog();
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (err) {
+        showToast('Error de conexión');
+      }
+    }
+
+    function editProduct(idOrCode) {
+      const p = products.find(x => x.id === idOrCode || String(x.codigo) === String(idOrCode));
+      if (p) openProductModal(p);
+    }
+
+    async function deleteProduct(idOrCode) {
+      if (!confirm('¿Confirma eliminar este producto del catálogo?')) return;
+      try {
+        const res = await authFetch(`/api/catalog/item?id=${encodeURIComponent(idOrCode)}`, { method: 'DELETE' });
+        const d = await res.json();
+        if (d.success) {
+          showToast('🗑️ Producto eliminado');
+          loadCatalog();
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (e) {
+        showToast('Error eliminando producto');
+      }
+    }
+
+    // Excel import/export
+    function downloadExcelTemplate() {
+      const wsData = [
+        ['CODIGO', 'DESCRIPCION', 'CATEGORIA', 'PRECIO', 'OFERTA', 'TEXTO_OFERTA', 'FOTO_URL'],
+        ['10333', 'SOBRES MANILA 2629 27X37X100', 'LIBRERÍA', '$ 15.000', 'SI', '🔥 OFERTA', ''],
+        ['10450', 'ROLLO TERMICO 80X70 MM', 'ROLLOS', '$ 4.800', 'NO', '', '']
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Productos');
+      XLSX.writeFile(wb, 'Plantilla_Catalogo_GaLop.xlsx');
+    }
+
+    function handleExcelUpload(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const wb = XLSX.read(data, { type: 'array' });
+          const firstSheet = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet);
+          if (!rows.length) return alert('El archivo está vacío');
+
+          const newItems = rows.map((r, idx) => ({
+            id: 'item_' + Date.now() + '_' + idx,
+            codigo: String(r.CODIGO || r.Codigo || r.codigo || '').trim(),
+            descripcion: String(r.DESCRIPCION || r.Descripcion || r.descripcion || '').trim(),
+            categoria: String(r.CATEGORIA || r.Categoria || r.categoria || 'LIBRERÍA').trim().toUpperCase(),
+            precio: String(r.PRECIO || r.Precio || r.precio || 'Consultar').trim(),
+            esOferta: String(r.OFERTA || r.Oferta || '').toUpperCase() === 'SI' || String(r.OFERTA || '').toUpperCase() === 'TRUE',
+            textoOferta: r.TEXTO_OFERTA || (r.OFERTA ? '🔥 OFERTA' : null),
+            foto1: r.FOTO_URL || null
+          })).filter(x => x.codigo);
+
+          if (!confirm(`Se procesaron ${newItems.length} artículos del Excel. ¿Desea reemplazar el catálogo actual?`)) return;
+
+          const res = await authFetch('/api/catalog/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: newItems })
+          });
+          const d = await res.json();
+          if (d.success) {
+            alert(`¡Éxito! Se sincronizaron ${d.count} artículos.`);
+            loadCatalog();
+          }
+        } catch (err) {
+          alert('Error procesando Excel: ' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+      e.target.value = '';
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `catalogo_galop_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    function handleJsonUpload(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (!Array.isArray(parsed)) return alert('El JSON debe contener un array de productos');
+          const res = await authFetch('/api/catalog/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: parsed })
+          });
+          const d = await res.json();
+          if (d.success) {
+            alert('¡Catálogo importado correctamente!');
+            loadCatalog();
+          }
+        } catch (err) {
+          alert('Error leyendo JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+
+    // --- MODULO 2: CONTENIDO DE LA PÁGINA WEB (CMS) ---
+    async function loadWebContent() {
+      try {
+        const res = await fetch('/api/content');
+        const d = await res.json();
+        if (d.success && d.content) {
+          webContent = d.content;
+          populateCmsForm();
+        }
+      } catch (e) {
+        console.error('Error cargando contenido web:', e);
+      }
+    }
+
+    function populateCmsForm() {
+      const h = webContent.hero || {};
+      const c = webContent.contacto || {};
+      const t = webContent.topBar || {};
+
+      document.getElementById('cms-hero-tag').value = h.tag || '';
+      document.getElementById('cms-hero-titulo').value = h.titulo || '';
+      document.getElementById('cms-hero-sub').value = h.subtitulo || '';
+      document.getElementById('cms-hero-btn1').value = h.btnCatalogo || '';
+      document.getElementById('cms-hero-btn2').value = h.btnService || '';
+
+      document.getElementById('cms-contacto-tel').value = c.telefono || t.whatsappText || '';
+      document.getElementById('cms-contacto-wa').value = c.whatsapp || t.whatsappNumber || '';
+      document.getElementById('cms-contacto-email').value = c.email || t.email || '';
+      document.getElementById('cms-contacto-dir').value = c.direccion || '';
+      document.getElementById('cms-contacto-horario').value = t.horario || '';
+      document.getElementById('cms-banner-titulo').value = c.tituloBanner || '';
+      document.getElementById('cms-banner-desc').value = c.descBanner || '';
+    }
+
+    async function saveWebContent() {
+      const payload = {
+        topBar: {
+          whatsappText: document.getElementById('cms-contacto-tel').value.trim(),
+          whatsappNumber: document.getElementById('cms-contacto-wa').value.trim(),
+          email: document.getElementById('cms-contacto-email').value.trim(),
+          horario: document.getElementById('cms-contacto-horario').value.trim()
+        },
+        hero: {
+          tag: document.getElementById('cms-hero-tag').value.trim(),
+          titulo: document.getElementById('cms-hero-titulo').value.trim(),
+          subtitulo: document.getElementById('cms-hero-sub').value.trim(),
+          btnCatalogo: document.getElementById('cms-hero-btn1').value.trim(),
+          btnService: document.getElementById('cms-hero-btn2').value.trim()
+        },
+        contacto: {
+          telefono: document.getElementById('cms-contacto-tel').value.trim(),
+          whatsapp: document.getElementById('cms-contacto-wa').value.trim(),
+          email: document.getElementById('cms-contacto-email').value.trim(),
+          direccion: document.getElementById('cms-contacto-dir').value.trim(),
+          tituloBanner: document.getElementById('cms-banner-titulo').value.trim(),
+          descBanner: document.getElementById('cms-banner-desc').value.trim()
+        }
+      };
+
+      try {
+        const res = await authFetch('/api/content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          webContent = d.content;
+          showToast('✅ Contenido de la página de inicio guardado');
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (e) {
+        showToast('Error guardando contenido web');
+      }
+    }
+
+    // --- MODULO 3: GESTIÓN DE CLIENTES ---
+    async function loadClients() {
+      try {
+        const res = await fetch('/api/clients');
+        const d = await res.json();
+        if (d.success) {
+          clients = d.clients || [];
+          renderClientsGrid();
+        }
+      } catch (e) {
+        console.error('Error cargando clientes:', e);
+      }
+    }
+
+    function renderClientsGrid() {
+      const container = document.getElementById('clients-cards-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!clients.length) {
+        container.innerHTML = '<div style="color: #94a3b8; padding: 20px;">No hay clientes registrados aún.</div>';
+        return;
+      }
+
+      clients.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'client-admin-card';
+        card.innerHTML = `
+          <div class="client-admin-top">
+            <img src="${c.logo || '/assets/images/logo.png'}" class="client-admin-logo" onerror="this.src='/assets/images/logo.png'">
+            <span style="font-size: 0.72rem; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 12px; font-weight: 700;">${c.rubro || 'Comercio'}</span>
+          </div>
+          <h4 style="font-size: 1rem; color: #0b2545; font-weight: 700; margin-top: 4px;">${c.nombre}</h4>
+          <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4; flex-grow: 1;">${c.servicio || 'Insumos continuos y soporte técnico.'}</p>
+          <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px;">
+            <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.8rem;" onclick="editClient('${c.id}')">✏️ Editar</button>
+            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteClient('${c.id}')">🗑️ Eliminar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openNewClientModal() {
+      document.getElementById('client-modal-title').textContent = 'Nuevo Cliente';
+      document.getElementById('modal-client-id').value = '';
+      document.getElementById('modal-client-nombre').value = '';
+      document.getElementById('modal-client-rubro').value = '';
+      document.getElementById('modal-client-servicio').value = '';
+      document.getElementById('modal-client-logo-url').value = '';
+      document.getElementById('modal-client-logo-prev').src = '/assets/images/logo.png';
+      document.getElementById('client-modal').classList.add('open');
+    }
+
+    function editClient(id) {
+      const c = clients.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById('client-modal-title').textContent = 'Editar Cliente';
+      document.getElementById('modal-client-id').value = c.id || '';
+      document.getElementById('modal-client-nombre').value = c.nombre || '';
+      document.getElementById('modal-client-rubro').value = c.rubro || '';
+      document.getElementById('modal-client-servicio').value = c.servicio || '';
+      document.getElementById('modal-client-logo-url').value = c.logo || '';
+      document.getElementById('modal-client-logo-prev').src = c.logo || '/assets/images/logo.png';
+      document.getElementById('client-modal').classList.add('open');
+    }
+
+    function closeClientModal() {
+      document.getElementById('client-modal').classList.remove('open');
+    }
+
+    function handleClientLogoFile(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const dataUrl = evt.target.result;
+        document.getElementById('modal-client-logo-prev').src = dataUrl;
+        document.getElementById('modal-client-logo-url').value = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('modal-client-logo-url')?.addEventListener('input', (e) => {
+      document.getElementById('modal-client-logo-prev').src = e.target.value.trim() || '/assets/images/logo.png';
+    });
+
+    async function saveClientModalForm(e) {
+      e.preventDefault();
+      const payload = {
+        id: document.getElementById('modal-client-id').value || undefined,
+        nombre: document.getElementById('modal-client-nombre').value.trim(),
+        rubro: document.getElementById('modal-client-rubro').value.trim(),
+        servicio: document.getElementById('modal-client-servicio').value.trim(),
+        logo: document.getElementById('modal-client-logo-url').value.trim() || '/assets/images/logo.png'
+      };
+
+      try {
+        const res = await authFetch('/api/clients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast('✅ Cliente guardado correctamente');
+          closeClientModal();
+          loadClients();
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (err) {
+        showToast('Error de conexión');
+      }
+    }
+
+    async function deleteClient(id) {
+      if (!confirm('¿Desea eliminar este cliente de la página web?')) return;
+      try {
+        const res = await authFetch(`/api/clients?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const d = await res.json();
+        if (d.success) {
+          showToast('🗑️ Cliente eliminado');
+          loadClients();
+        }
+      } catch (e) {
+        showToast('Error eliminando cliente');
+      }
+    }
+
+    // --- GESTIÓN DE SISTEMAS A MEDIDA ---
+    async function loadSistemas() {
+      try {
+        const res = await fetch('/api/sistemas');
+        const d = await res.json();
+        if (d.success) {
+          sistemas = d.sistemas || [];
+          renderSistemasGrid();
+        }
+      } catch (e) {
+        console.error('Error cargando sistemas:', e);
+      }
+    }
+
+    function renderSistemasGrid() {
+      const container = document.getElementById('systems-cards-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!sistemas.length) {
+        container.innerHTML = '<div style="color: #94a3b8; padding: 20px;">No hay sistemas registrados aún.</div>';
+        return;
+      }
+
+      sistemas.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'system-admin-card';
+        const featuresList = (s.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('');
+        const loginBadge = s.loginUrl ? `<div style="font-size: 0.78rem; color: #2563eb; font-weight: 600; margin: 8px 0; background: #eff6ff; padding: 4px 8px; border-radius: 6px;">🔗 Acceso login: <a href="${s.loginUrl}" target="_blank" style="color: #1d4ed8;">${s.loginUrl}</a></div>` : '';
+
+        card.innerHTML = `
+          <div class="system-admin-head">
+            <div class="system-admin-icon">${s.icono || '💻'}</div>
+            <span class="system-admin-badge">${s.badge || 'Software'}</span>
+          </div>
+          <h3 class="system-admin-title">${s.titulo}</h3>
+          <p class="system-admin-desc">${s.descripcion}</p>
+          <ul class="system-admin-features">
+            ${featuresList}
+          </ul>
+          ${loginBadge}
+          <div class="system-admin-actions">
+            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.82rem;" onclick="editSystem('${s.id}')">✏️ Editar</button>
+            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.82rem;" onclick="deleteSystem('${s.id}')">🗑️ Eliminar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openNewSystemModal() {
+      document.getElementById('system-modal-title').textContent = 'Nuevo Sistema a Medida';
+      document.getElementById('modal-sys-id').value = '';
+      document.getElementById('modal-sys-icono').value = '💻';
+      document.getElementById('modal-sys-badge').value = 'Software a Medida';
+      document.getElementById('modal-sys-titulo').value = '';
+      document.getElementById('modal-sys-desc').value = '';
+      document.getElementById('modal-sys-f1').value = '';
+      document.getElementById('modal-sys-f2').value = '';
+      document.getElementById('modal-sys-f3').value = '';
+      document.getElementById('modal-sys-btn').value = 'Solicitar demo comercial →';
+      document.getElementById('modal-sys-wa').value = '';
+      document.getElementById('modal-sys-login-url').value = '';
+      document.getElementById('modal-sys-login-btn').value = '';
+      document.getElementById('system-modal').classList.add('open');
+    }
+
+    function editSystem(id) {
+      const s = sistemas.find(x => x.id === id);
+      if (!s) return;
+      document.getElementById('system-modal-title').textContent = 'Editar Sistema a Medida';
+      document.getElementById('modal-sys-id').value = s.id || '';
+      document.getElementById('modal-sys-icono').value = s.icono || '💻';
+      document.getElementById('modal-sys-badge').value = s.badge || '';
+      document.getElementById('modal-sys-titulo').value = s.titulo || '';
+      document.getElementById('modal-sys-desc').value = s.descripcion || '';
+      document.getElementById('modal-sys-f1').value = s.features?.[0] || '';
+      document.getElementById('modal-sys-f2').value = s.features?.[1] || '';
+      document.getElementById('modal-sys-f3').value = s.features?.[2] || '';
+      document.getElementById('modal-sys-btn').value = s.btnText || 'Solicitar demo comercial →';
+      document.getElementById('modal-sys-wa').value = s.whatsappMsg || '';
+      document.getElementById('modal-sys-login-url').value = s.loginUrl || '';
+      document.getElementById('modal-sys-login-btn').value = s.loginBtnText || '';
+      document.getElementById('system-modal').classList.add('open');
+    }
+
+    function closeSystemModal() {
+      document.getElementById('system-modal').classList.remove('open');
+    }
+
+    async function saveSystemModalForm(e) {
+      e.preventDefault();
+      const f1 = document.getElementById('modal-sys-f1').value.trim();
+      const f2 = document.getElementById('modal-sys-f2').value.trim();
+      const f3 = document.getElementById('modal-sys-f3').value.trim();
+      const features = [f1, f2, f3].filter(Boolean);
+
+      const payload = {
+        id: document.getElementById('modal-sys-id').value || undefined,
+        icono: document.getElementById('modal-sys-icono').value.trim() || '💻',
+        badge: document.getElementById('modal-sys-badge').value.trim(),
+        titulo: document.getElementById('modal-sys-titulo').value.trim(),
+        descripcion: document.getElementById('modal-sys-desc').value.trim(),
+        features: features,
+        btnText: document.getElementById('modal-sys-btn').value.trim(),
+        whatsappMsg: document.getElementById('modal-sys-wa').value.trim(),
+        loginUrl: document.getElementById('modal-sys-login-url').value.trim(),
+        loginBtnText: document.getElementById('modal-sys-login-btn').value.trim()
+      };
+
+      try {
+        const res = await authFetch('/api/sistemas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast('✅ Sistema de software guardado correctamente');
+          closeSystemModal();
+          loadSistemas();
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (err) {
+        showToast('Error de conexión');
+      }
+    }
+
+    async function deleteSystem(id) {
+      if (!confirm('¿Desea eliminar este sistema de la página web?')) return;
+      try {
+        const res = await authFetch(`/api/sistemas?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const d = await res.json();
+        if (d.success) {
+          showToast('🗑️ Sistema eliminado');
+          loadSistemas();
+        } else {
+          alert('Error: ' + d.error);
+        }
+      } catch (e) {
+        showToast('Error eliminando sistema');
+      }
+    }
+
+    // Inicializar verificando sesión
+    checkAuth();
+  </script>
+</body>
+</html>

@@ -1,4 +1,11 @@
 {
+  "name": "pagina-web-galop-srl",
+  "version": "1.0.0",
+  "description": "Sitio Web, Catálogo de Productos y Panel ABM para GaLop S.R.L.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
   "dependencies": {
     "ssh2-sftp-client": "^12.1.1",
     "xlsx": "^0.18.5"

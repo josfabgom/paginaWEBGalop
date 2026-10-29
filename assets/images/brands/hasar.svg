@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 48" width="170" height="48">
+  <g transform="translate(6, 6)">
+    <!-- Hasar Prism Icon -->
+    <path d="M18 0 L36 10 L18 20 L0 10 Z" fill="#E11D48" />
+    <path d="M0 10 L18 20 L18 36 L0 26 Z" fill="#BE123C" />
+    <path d="M18 20 L36 10 L36 26 L18 36 Z" fill="#9F1239" />
+    <path d="M18 4 L31 11 L18 18 L5 11 Z" fill="#FB7185" opacity="0.6" />
+    <!-- Hasar Text -->
+    <text x="46" y="24" font-family="'Poppins', 'Arial Black', sans-serif" font-weight="900" font-size="22" fill="#0F172A" letter-spacing="1.5">HASAR</text>
+    <text x="47" y="34" font-family="'Inter', sans-serif" font-weight="700" font-size="7.5" fill="#E11D48" letter-spacing="2">GRUPO HASAR</text>
+  </g>
+</svg>

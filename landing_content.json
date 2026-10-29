@@ -1,0 +1,23 @@
+{
+  "topBar": {
+    "whatsappText": "+54 9 376 522-4717",
+    "whatsappNumber": "5493765224717",
+    "email": "galopsrl@gmail.com",
+    "horario": "Posadas, Misiones · Lun a Vie 8:00 - 18:00 hs"
+  },
+  "hero": {
+    "tag": "Insumos Comerciales & Servicio Técnico Homologado",
+    "titulo": "Soluciones Integrales en Insumos y Equipamiento para tu Comercio o Empresa",
+    "subtitulo": "Proveemos rollos térmicos, tóner de alta calidad, papelería y equipamiento para puntos de venta. Brindamos servicio técnico calificado en impresoras fiscales, térmicas y lectores.",
+    "btnCatalogo": "🛍️ Explorar Catálogo de Insumos",
+    "btnService": "🔧 Solicitar Servicio Técnico"
+  },
+  "contacto": {
+    "telefono": "+54 9 376 522-4717",
+    "whatsapp": "5493765224717",
+    "email": "galopsrl@gmail.com",
+    "direccion": "Posadas, Misiones, Argentina",
+    "tituloBanner": "¿Listo para optimizar los insumos o reparar tus equipos?",
+    "descBanner": "Comunicate hoy mismo con nuestro equipo de atención comercial para recibir una cotización a medida o coordinar el ingreso de tu equipo a soporte técnico."
+  }
+}

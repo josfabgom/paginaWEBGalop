@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" width="160" height="48">
+  <g transform="translate(6, 6)">
+    <!-- Pizzini Oval Frame -->
+    <rect x="0" y="2" width="148" height="32" rx="16" fill="#F8FAFC" stroke="#003366" stroke-width="2" />
+    <text x="74" y="24" text-anchor="middle" font-family="'Arial', 'Poppins', sans-serif" font-weight="900" font-style="italic" font-size="20" fill="#003366" letter-spacing="1">pizzini</text>
+    <circle cx="118" cy="14" r="3" fill="#C8102E" />
+  </g>
+</svg>

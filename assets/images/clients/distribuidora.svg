@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 52" width="160" height="52">
+  <g transform="translate(6, 6)">
+    <!-- Box / Distribution Icon -->
+    <rect x="0" y="4" width="34" height="32" rx="8" fill="#D97706" />
+    <path d="M10 14 L17 10 L24 14 L17 18 Z M10 16 L16 19 L16 26 L10 23 Z M18 19 L24 16 L24 23 L18 26 Z" fill="#FFFFFF" />
+    <!-- Text -->
+    <text x="42" y="22" font-family="'Poppins', sans-serif" font-weight="800" font-size="13.5" fill="#0F172A">MAYORISTAS</text>
+    <text x="43" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="7.5" fill="#D97706" letter-spacing="1">DISTRIBUCIÓN &amp; LOGÍSTICA</text>
+  </g>
+</svg>

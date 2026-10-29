@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 52" width="160" height="52">
+  <g transform="translate(6, 6)">
+    <!-- Club / Sport Icon -->
+    <rect x="0" y="4" width="34" height="32" rx="8" fill="#2563EB" />
+    <circle cx="17" cy="20" r="8" stroke="#FFFFFF" stroke-width="2" fill="none" />
+    <path d="M12 20 L22 20 M17 15 L17 25" stroke="#FFFFFF" stroke-width="1.5" />
+    <!-- Text -->
+    <text x="42" y="22" font-family="'Poppins', sans-serif" font-weight="800" font-size="13.5" fill="#0F172A">COMPLEJOS</text>
+    <text x="43" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="7.5" fill="#2563EB" letter-spacing="1">CLUBES &amp; DEPORTES</text>
+  </g>
+</svg>

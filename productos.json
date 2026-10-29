@@ -1,1 +1,426 @@
-[{"codigo":"10333","descripcion":"SOBRES MANILA 2629 27X37X100 (OF)","categoria":"LIBRERÍA"},{"codigo":"10334","descripcion":"SOBRES MANILA 2627 24X30X100 (A4)","categoria":"LIBRERÍA"},{"codigo":"10335","descripcion":"FOLIO A4x100 KOBY STAND. 40 MIC.","categoria":"LIBRERÍA"},{"codigo":"10359","descripcion":"FOLIO A4 X 100 KOBY STANDAR 80 MIC.","categoria":"LIBRERÍA"},{"codigo":"10340","descripcion":"LIBRO ACTA 4M CORONA","categoria":"LIBRERÍA"},{"codigo":"10374","descripcion":"CUADER.C/E 16X21 120HJ EXEC. NEGRO","categoria":"LIBRERÍA"},{"codigo":"10272","descripcion":"RESMA HOJA A4 DE 75 G/M","categoria":"LIBRERÍA"},{"codigo":"10336","descripcion":"MARCADOR KOBY PERM NEGRA BISe","categoria":"LIBRERÍA"},{"codigo":"10339","descripcion":"BOLIGRAFO BIC CRIST.INTENSO 1.6 NEGRO...","categoria":"LIBRERÍA"},{"codigo":"10367","descripcion":"BOLIGRAFO BIC NEGRO","categoria":"LIBRERÍA"},{"codigo":"10376","descripcion":"RESALT. PIZZINI 1280/81 AMARILLO c10u","categoria":"LIBRERÍA"},{"codigo":"10377","descripcion":"RESALT.PIZZINI 1280/81 NARANJA c10u","categoria":"LIBRERÍA"},{"codigo":"10337","descripcion":"PORTA CLIP C/IMAN CUADRADO 200102","categoria":"LIBRERÍA"},{"codigo":"10341","descripcion":"CLIP DE PAPEL N 2 25MM SIPAF","categoria":"LIBRERÍA"},{"codigo":"10378","descripcion":"CLIP DE PAPEL Nº 6 45MM SIPAF","categoria":"LIBRERÍA"},{"codigo":"10342","descripcion":"BANDEJA PAPELERA 3 PISOS","categoria":"LIBRERÍA"},{"codigo":"10358","descripcion":"C. ARCHIVO PLAST 455X355X255 C/TAPA","categoria":"LIBRERÍA"},{"codigo":"10369","descripcion":"CAJA ARCHIVO N12 OF 36x25","categoria":"LIBRERÍA"},{"codigo":"10370","descripcion":"CAJA ARCHIVO CARTON N9 OF 38x26","categoria":"LIBRERÍA"},{"codigo":"10375","descripcion":"CAJA ARCHIVO CARTON 42X32X25","categoria":"LIBRERÍA"},{"codigo":"10368","descripcion":"TACO AUTOADH 37.5X50","categoria":"LIBRERÍA"},{"codigo":"10296","descripcion":"BANDAS ELASTICAS 250g","categoria":"LIBRERÍA"},{"codigo":"10372","descripcion":"CERA DACTILAR D2 PARA CONTAR 14G","categoria":"LIBRERÍA"},{"codigo":"10338","descripcion":"CINTA ADHESIVA 12X30 10U","categoria":"LIBRERÍA"},{"codigo":"10343","descripcion":"VOLIGOMA 30ML","categoria":"LIBRERÍA"},{"codigo":"10344","descripcion":"VOLIGOMA X50ML","categoria":"LIBRERÍA"},{"codigo":"10373","descripcion":"CONTAC 45X10 COLOR ROJO","categoria":"LIBRERÍA"},{"codigo":"10293","descripcion":"ABROCHADORA AHD 24/6 26/6 CROMADA 3...","categoria":"LIBRERÍA"},{"codigo":"10294","descripcion":"BROCHES MIT 21/6 30Hojas","categoria":"LIBRERÍA"},{"codigo":"10319","descripcion":"BROCHES MIT 24/6 30Hojas (1000)","categoria":"LIBRERÍA"},{"codigo":"10320","descripcion":"BROCHES MIT N10","categoria":"LIBRERÍA"},{"codigo":"10379","descripcion":"SACAPUNTA G","categoria":"LIBRERÍA"},{"codigo":"10360","descripcion":"PAD P/MOUSE GTC PAD-212 ERGONOM C/AP","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10043","descripcion":"IMPRESOR FISCAL HASAR 250-F","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10041","descripcion":"IMPRESORA TERMINA HASAR H-181","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10063","descripcion":"LECTOR DE MANO HASAR 9010","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10236","descripcion":"LECTOR DE MESA HASAR 3410","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10235","descripcion":"LECTOR DATALOGIC QUICK 2120","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10383","descripcion":"HASAR POS - Punto de venta A-HAS-5200B","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10040","descripcion":"HASAR - TECLADO HASAR T84","categoria":"TECNOLOGÍA Y COMPUTACIÓN"},{"codigo":"10345","descripcion":"TONER SP3710 - GTC","categoria":"TONER"},{"codigo":"10346","descripcion":"TONER TN1060 - GTC","categoria":"TONER"},{"codigo":"10347","descripcion":"TONER W1500A C/CHIP - GTC","categoria":"TONER"},{"codigo":"10348","descripcion":"TONER H-105A C/CHIP - GTC","categoria":"TONER"},{"codigo":"10363","descripcion":"TONER 285/435/436A - GTC","categoria":"TONER"},{"codigo":"10349","descripcion":"TONER CF217A CON CHIP -GTC","categoria":"TONER"},{"codigo":"10353","descripcion":"TONER CF258A CON CHIP -GTC","categoria":"TONER"},{"codigo":"10352","descripcion":"TONER X-320 - GTC","categoria":"TONER"},{"codigo":"10351","descripcion":"DRUN DR1000/1060 Unidad de Imagen - GTC","categoria":"TONER"},{"codigo":"10011","descripcion":"ROLLOS TEMICOS 55X44 TOP","categoria":"ROLLOS"},{"codigo":"10280","descripcion":"ROLLO C/ETIQ 55x29x950e 1B(Termico)","categoria":"ROLLOS"},{"codigo":"10072","descripcion":"ROLLO C/ETIQ 64x32x500  1B(Termico)","categoria":"ROLLOS"},{"codigo":"10078","descripcion":"ROLLO ETIQUETAS 29x20x2170e 2B","categoria":"ROLLOS"}]
+[
+  {
+    "codigo": "10333",
+    "descripcion": "SOBRES MANILA 2629 27X37X100 (OF)",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10334",
+    "descripcion": "SOBRES MANILA 2627 24X30X100 (A4)",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10335",
+    "descripcion": "FOLIO A4x100 KOBY STAND. 40 MIC.",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10359",
+    "descripcion": "FOLIO A4 X 100 KOBY STANDAR 80 MIC.",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10340",
+    "descripcion": "LIBRO ACTA 4M CORONA",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10374",
+    "descripcion": "CUADER.C/E 16X21 120HJ EXEC. NEGRO",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10272",
+    "descripcion": "RESMA HOJA A4 DE 75 G/M",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10336",
+    "descripcion": "MARCADOR KOBY PERM NEGRA BISe",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10339",
+    "descripcion": "BOLIGRAFO BIC CRIST.INTENSO 1.6 NEGRO...",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10367",
+    "descripcion": "BOLIGRAFO BIC NEGRO",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10376",
+    "descripcion": "RESALT. PIZZINI 1280/81 AMARILLO c10u",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10377",
+    "descripcion": "RESALT.PIZZINI 1280/81 NARANJA c10u",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10337",
+    "descripcion": "PORTA CLIP C/IMAN CUADRADO 200102",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10341",
+    "descripcion": "CLIP DE PAPEL N 2 25MM SIPAF",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10378",
+    "descripcion": "CLIP DE PAPEL Nº 6 45MM SIPAF",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10342",
+    "descripcion": "BANDEJA PAPELERA 3 PISOS",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10358",
+    "descripcion": "C. ARCHIVO PLAST 455X355X255 C/TAPA",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10369",
+    "descripcion": "CAJA ARCHIVO N12 OF 36x25",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10370",
+    "descripcion": "CAJA ARCHIVO CARTON N9 OF 38x26",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10375",
+    "descripcion": "CAJA ARCHIVO CARTON 42X32X25",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10368",
+    "descripcion": "TACO AUTOADH 37.5X50",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10296",
+    "descripcion": "BANDAS ELASTICAS 250g",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10372",
+    "descripcion": "CERA DACTILAR D2 PARA CONTAR 14G",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10338",
+    "descripcion": "CINTA ADHESIVA 12X30 10U",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10343",
+    "descripcion": "VOLIGOMA 30ML",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10344",
+    "descripcion": "VOLIGOMA X50ML",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10373",
+    "descripcion": "CONTAC 45X10 COLOR ROJO",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10293",
+    "descripcion": "ABROCHADORA AHD 24/6 26/6 CROMADA 3...",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10294",
+    "descripcion": "BROCHES MIT 21/6 30Hojas",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10319",
+    "descripcion": "BROCHES MIT 24/6 30Hojas (1000)",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10320",
+    "descripcion": "BROCHES MIT N10",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10379",
+    "descripcion": "SACAPUNTA G",
+    "categoria": "LIBRERÍA",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10360",
+    "descripcion": "PAD P/MOUSE GTC PAD-212 ERGONOM C/AP",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10043",
+    "descripcion": "IMPRESOR FISCAL HASAR 250-F",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10041",
+    "descripcion": "IMPRESORA TERMINA HASAR H-181",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "$ 125.000",
+    "esOferta": true,
+    "textoOferta": "🔥 20% OFF"
+  },
+  {
+    "codigo": "10063",
+    "descripcion": "LECTOR DE MANO HASAR 9010",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10236",
+    "descripcion": "LECTOR DE MESA HASAR 3410",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "$ 45.000",
+    "esOferta": true,
+    "textoOferta": "🔥 OFERTA"
+  },
+  {
+    "codigo": "10235",
+    "descripcion": "LECTOR DATALOGIC QUICK 2120",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10383",
+    "descripcion": "HASAR POS - Punto de venta A-HAS-5200B",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10040",
+    "descripcion": "HASAR - TECLADO HASAR T84",
+    "categoria": "TECNOLOGÍA Y COMPUTACIÓN",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10345",
+    "descripcion": "TONER SP3710 - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10346",
+    "descripcion": "TONER TN1060 - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10347",
+    "descripcion": "TONER W1500A C/CHIP - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10348",
+    "descripcion": "TONER H-105A C/CHIP - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10363",
+    "descripcion": "TONER 285/435/436A - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10349",
+    "descripcion": "TONER CF217A CON CHIP -GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10353",
+    "descripcion": "TONER CF258A CON CHIP -GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10352",
+    "descripcion": "TONER X-320 - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10351",
+    "descripcion": "DRUN DR1000/1060 Unidad de Imagen - GTC",
+    "categoria": "TONER",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10011",
+    "descripcion": "ROLLOS TEMICOS 55X44 TOP",
+    "categoria": "ROLLOS",
+    "precio": "$ 1.200",
+    "esOferta": true,
+    "textoOferta": "🔥 PROMO"
+  },
+  {
+    "codigo": "10280",
+    "descripcion": "ROLLO C/ETIQ 55x29x950e 1B(Termico)",
+    "categoria": "ROLLOS",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10072",
+    "descripcion": "ROLLO C/ETIQ 64x32x500  1B(Termico)",
+    "categoria": "ROLLOS",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  },
+  {
+    "codigo": "10078",
+    "descripcion": "ROLLO ETIQUETAS 29x20x2170e 2B",
+    "categoria": "ROLLOS",
+    "precio": "Consultar",
+    "esOferta": false,
+    "textoOferta": null
+  }
+]

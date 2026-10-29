@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 48" width="150" height="48">
+  <g transform="translate(8, 6)">
+    <!-- GTC badge -->
+    <rect x="0" y="4" width="34" height="26" rx="6" fill="#E11D48" />
+    <path d="M10 12 L24 12 L17 22 Z" fill="#FFFFFF" opacity="0.9" />
+    <!-- GTC Text -->
+    <text x="42" y="24" font-family="'Poppins', 'Arial Black', sans-serif" font-style="italic" font-weight="900" font-size="22" fill="#0B2545" letter-spacing="1">GTC</text>
+    <text x="43" y="34" font-family="'Inter', sans-serif" font-weight="700" font-size="7" fill="#E11D48" letter-spacing="2">RIBBON &amp; TONER</text>
+  </g>
+</svg>

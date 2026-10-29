@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cliente-1",
+    "nombre": "Cadenas de Supermercados",
+    "rubro": "Retail & Consumo Masivo",
+    "logo": "/assets/images/clients/supermercado.svg",
+    "servicio": "Provisión mensual de rollos térmicos y soporte de controladores fiscales"
+  },
+  {
+    "id": "cliente-2",
+    "nombre": "Redes de Farmacias",
+    "rubro": "Salud & Farmacia",
+    "logo": "/assets/images/clients/farmacia.svg",
+    "servicio": "Insumos para tickeadoras, tóner y mantenimiento de terminales POS"
+  },
+  {
+    "id": "cliente-3",
+    "nombre": "Estudios Contables & Legales",
+    "rubro": "Servicios Corporativos",
+    "logo": "/assets/images/clients/estudio.svg",
+    "servicio": "Papelería administrativa, resmas de papel y cartuchos de tóner láser"
+  },
+  {
+    "id": "cliente-4",
+    "nombre": "Mayoristas & Distribuidores",
+    "rubro": "Logística & Almacenes",
+    "logo": "/assets/images/clients/distribuidora.svg",
+    "servicio": "Etiquetas autoadhesivas continuas, lectores industriales y balanzas"
+  },
+  {
+    "id": "cliente-5",
+    "nombre": "Clubes & Complejos Deportivos",
+    "rubro": "Deporte & Recreación",
+    "logo": "/assets/images/clients/clubes.svg",
+    "servicio": "Software de reserva de turnos, socios y control de quiosco/buffet"
+  },
+  {
+    "id": "cliente-6",
+    "nombre": "Restaurantes & Gastronomía",
+    "rubro": "Sector Gastronómico",
+    "logo": "/assets/images/clients/gastronomia.svg",
+    "servicio": "Rollos térmicos de comanda 80mm e impresoras térmicas de cocina"
+  }
+]

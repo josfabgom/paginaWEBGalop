@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión · GestionQ - GaLop S.R.L.</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #0f172a;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+        }
+        .login-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 44px 36px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .login-brand-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+        }
+        .login-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+        .login-title span {
+            color: #2563eb;
+        }
+        .login-subtitle {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-top: 6px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #2563eb;
+            text-decoration: none;
+            margin-top: 14px;
+            transition: color 0.15s;
+        }
+        .back-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+            color: #0f172a;
+            background: #ffffff;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-submit:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        }
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        .btn-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert-error {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 20px;
+            align-items: center;
+            gap: 8px;
+        }
+        .alert-error.active {
+            display: flex;
+        }
+        .login-footer-info {
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            text-align: center;
+            font-size: 0.84rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .login-footer-info a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .login-footer-info a:hover {
+            text-decoration: underline;
+        }
+        .demo-pill {
+            display: inline-block;
+            background: #eff6ff;
+            color: #1e40af;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid #dbeafe;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-brand-icon">Q</div>
+                <h1 class="login-title">Gestion<span>Q</span></h1>
+                <p class="login-subtitle">Inicia sesión en tu panel de control</p>
+                <div>
+                    <a href="/" class="back-link">
+                        <span>←</span> Volver al inicio
+                    </a>
+                </div>
+            </div>
+
+            <div class="alert-error" id="error-box">
+                <span>⚠️</span>
+                <span id="error-text">Credenciales incorrectas</span>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Correo electrónico" 
+                        required 
+                        autocomplete="email"
+                        value="admin@galopsrl.com.ar"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Contraseña" 
+                        required 
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <button type="submit" class="btn-submit" id="btn-submit">
+                    <span>Ingresar</span>
+                </button>
+            </form>
+
+            <div class="login-footer-info">
+                <div>¿Buscás el Portal de Catálogo y CMS?</div>
+                <a href="/portal">🔐 Ingresar a Portal Personal / ABM</a>
+                <div style="margin-top: 8px;">
+                    <span class="demo-pill">💡 Clave de acceso GaLop o demo comercial</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorBox = document.getElementById('error-box');
+        const errorText = document.getElementById('error-text');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        // Obtener callbackUrl de los query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const callbackUrl = urlParams.get('callbackUrl') || '/dashboard';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorBox.classList.remove('active');
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Verificando...';
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            try {
+                const res = await fetch('/api/gestionq/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, callbackUrl })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    window.location.href = data.redirectUrl || callbackUrl;
+                } else {
+                    errorText.textContent = data.error || 'Credenciales incorrectas';
+                    errorBox.classList.add('active');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Ingresar';
+                }
+            } catch (err) {
+                // Fallback si la API no está disponible o error de red
+                errorText.textContent = 'Error al comunicarse con el servidor';
+                errorBox.classList.add('active');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Ingresar';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 48" width="140" height="48">
+  <g transform="translate(10, 6)">
+    <!-- Bic Orange Oval -->
+    <ellipse cx="16" cy="18" rx="14" ry="14" fill="#F58220" />
+    <circle cx="16" cy="11" r="3.5" fill="#1E293B" />
+    <path d="M12 16 L20 16 L18 25 L14 25 Z" fill="#1E293B" />
+    <!-- Bic text -->
+    <text x="38" y="26" font-family="'Arial Black', 'Poppins', sans-serif" font-style="italic" font-weight="900" font-size="25" fill="#1E293B" letter-spacing="1">BiC</text>
+  </g>
+</svg>
