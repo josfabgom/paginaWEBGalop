@@ -16,48 +16,6 @@
     "whatsappMsg": "Hola GaLop, quisiera consultar por el sistema GestionQ (Gestión Comercial y POS)"
   },
   {
-    "id": "sistema-2",
-    "icono": "🎾",
-    "badge": "Clubes & Turnos",
-    "titulo": "Gestión Deportiva y Reserva de Turnos",
-    "descripcion": "Plataforma para administración de complejos de pádel, fútbol y clubes. Control ágil de turnos, socios, quiosco/buffet y cobro de señas.",
-    "features": [
-      "Grilla interactiva de reservas y agenda por cancha",
-      "Control de ventas en cantina / quiosco con caja integrada",
-      "Base de socios, perfiles de jugadores y recordatorios"
-    ],
-    "btnText": "Consultar características →",
-    "whatsappMsg": "Hola GaLop, quisiera consultar por el sistema de Gestión de Turnos y Complejos"
-  },
-  {
-    "id": "sistema-3",
-    "icono": "🚚",
-    "badge": "Logística & Rutas",
-    "titulo": "Control de Viajes, Flotas y Transporte",
-    "descripcion": "Sistema especializado para el seguimiento de despachos, control de cargas, liquidación de viajes a choferes y gastos de unidades vehiculares.",
-    "features": [
-      "Registro y control de fletes, remises o cargas por viaje",
-      "Liquidaciones periódicas, comisiones y control de combustible",
-      "Mantenimiento preventivo de vehículos y estados de flota"
-    ],
-    "btnText": "Más información del sistema →",
-    "whatsappMsg": "Hola GaLop, quisiera consultar por el sistema de Control de Viajes y Flotas"
-  },
-  {
-    "id": "sistema-4",
-    "icono": "⚖️",
-    "badge": "Hardware & IOT",
-    "titulo": "Integración con Balanzas y Dispositivos",
-    "descripcion": "Desarrollo de módulos puente para conectar balanzas comerciales, lectores industriales y controladores directamente con tu sistema de facturación.",
-    "features": [
-      "Captura de peso y tara automática sin digitar en pantalla",
-      "Emisión e impresión directa de etiquetas con código de barra",
-      "Compatibilidad con protocolos RS232, USB y red Ethernet"
-    ],
-    "btnText": "Consultar compatibilidad →",
-    "whatsappMsg": "Hola GaLop, quisiera consultar por integraciones de balanzas y hardware"
-  },
-  {
     "id": "sistema-5",
     "icono": "📺",
     "badge": "Cartelería & Pantallas · Demo en Vivo",
