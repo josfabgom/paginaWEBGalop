@@ -2658,21 +2658,9 @@
                         <li><span>✓</span> Reproducción programable por franjas horarias (mañana, mediodía, noche) en bucle continuo</li>
                     </ul>
 
-                    <!-- Muestra Interactiva Banner Mini -->
-                    <div style="background: #0f172a; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); transition: transform 0.2s;" onclick="openCarteleriaModal('/demo-carteleria.html', 'Sistemas de Cartelería Digital (Farmacia San José)')">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.25rem;">📺</span>
-                            <div style="text-align: left;">
-                                <div style="color: #38bdf8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Muestra Gráfica en Vivo</div>
-                                <div style="color: #e2e8f0; font-size: 0.78rem;">Pantalla instalada en Farmacia San José</div>
-                            </div>
-                        </div>
-                        <span style="background: #0284c7; color: white; border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; font-weight: 700;">Ver ▶</span>
-                    </div>
-
                     <div class="soft-card-actions">
                         <button type="button" class="b-card-btn-login" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);" onclick="openCarteleriaModal('/demo-carteleria.html', 'Sistemas de Cartelería Digital (Farmacia San José)')">
-                            <span>📺 Ver Demostración en Pantalla ↗</span>
+                            <span>📺 Demostración en Pantalla ↗</span>
                         </button>
                         <a href="https://wa.me/5493765224717?text=Hola%20GaLop,%20quisiera%20consultar%20por%20el%20sistema%20de%20Carteler%C3%ADa%20Digital%20y%20Pantallas%20para%20Negocios" target="_blank" class="b-card-btn-secondary">
                             <span>💬 Cotizar para mi Negocio →</span>
@@ -3633,25 +3621,12 @@
                     const featuresHtml = (s.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('');
 
                     let actionsHtml = '';
-                    let previewHtml = '';
 
                     if (s.demoUrl) {
-                        previewHtml = `
-                            <div style="background: #0f172a; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); transition: transform 0.2s;" onclick="openCarteleriaModal('${s.demoUrl}', '${(s.titulo || '').replace(/'/g, "\\'")}')">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 1.25rem;">📺</span>
-                                    <div style="text-align: left;">
-                                        <div style="color: #38bdf8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Muestra Gráfica en Vivo</div>
-                                        <div style="color: #e2e8f0; font-size: 0.78rem;">Ver cómo queda en pantalla real</div>
-                                    </div>
-                                </div>
-                                <span style="background: #0284c7; color: white; border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; font-weight: 700;">Ver ▶</span>
-                            </div>
-                        `;
                         actionsHtml = `
                             <div class="soft-card-actions">
                                 <button type="button" class="b-card-btn-login" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);" onclick="openCarteleriaModal('${s.demoUrl}', '${(s.titulo || '').replace(/'/g, "\\'")}')">
-                                    <span>${s.demoBtnText || '📺 Ver Demostración en Pantalla ↗'}</span>
+                                    <span>${s.demoBtnText || '📺 Demostración Pantalla ↗'}</span>
                                 </button>
                                 <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn-secondary">
                                     <span>${s.btnText || '💬 Cotizar para mi Negocio →'}</span>
@@ -3689,7 +3664,6 @@
                         <ul class="soft-features">
                             ${featuresHtml}
                         </ul>
-                        ${previewHtml}
                         ${actionsHtml}
                     `;
                     container.appendChild(card);
