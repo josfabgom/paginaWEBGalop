@@ -2144,22 +2144,8 @@
                         Servicios & Software
                         <span class="nav-arrow">▾</span>
                     </a>
-                    <div class="dropdown-menu dropdown-wide">
+                    <div class="dropdown-menu dropdown-wide" id="dropdown-software-menu">
                         <div class="dropdown-header">Laboratorio Técnico & Software</div>
-                        <a href="/login?callbackUrl=/dashboard" class="dropdown-item" style="background: #eff6ff; border: 1px solid #bfdbfe; margin-bottom: 6px;">
-                            <div class="dropdown-icon" style="background: #2563eb; color: white;">📊</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title" style="color: #1d4ed8;">Sistema GestionQ (Acceso Online) ↗</div>
-                                <div class="dropdown-desc">Ingresar al ERP comercial y dashboard en vivo</div>
-                            </div>
-                        </a>
-                        <a href="#sistemas" class="dropdown-item">
-                            <div class="dropdown-icon">💻</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title">Sistemas a Medida & POS</div>
-                                <div class="dropdown-desc">Software propio para comercios, cajas y stock</div>
-                            </div>
-                        </a>
                         <a href="#servicio-tecnico" class="dropdown-item">
                             <div class="dropdown-icon">🛠️</div>
                             <div class="dropdown-text">
@@ -2167,34 +2153,26 @@
                                 <div class="dropdown-desc">Reparación de impresoras fiscales Hasar/Epson y POS</div>
                             </div>
                         </a>
-                        <a href="#sistemas" class="dropdown-item">
-                            <div class="dropdown-icon">🎾</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title">Gestión Deportiva & Turnos</div>
-                                <div class="dropdown-desc">Control de reservas para canchas de pádel y clubes</div>
-                            </div>
-                        </a>
-                        <a href="#sistemas" class="dropdown-item">
-                            <div class="dropdown-icon">🚚</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title">Control de Flotas & Viajes</div>
-                                <div class="dropdown-desc">Seguimiento de fletes, gastos y choferes</div>
-                            </div>
-                        </a>
-                        <a href="#sistemas" class="dropdown-item">
-                            <div class="dropdown-icon">⚖️</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title">Integración con Balanzas</div>
-                                <div class="dropdown-desc">Lectura de peso directo e impresión de etiquetas</div>
-                            </div>
-                        </a>
-                        <a href="#sistemas" class="dropdown-item">
-                            <div class="dropdown-icon">📺</div>
-                            <div class="dropdown-text">
-                                <div class="dropdown-title">Cartelería Digital & Pantallas</div>
-                                <div class="dropdown-desc">Menús dinámicos y promociones para locales</div>
-                            </div>
-                        </a>
+                        <!-- Contenedor dinámico de sistemas sincronizado con la gestión -->
+                        <div id="nav-software-dynamic-items">
+                            <a href="/login?callbackUrl=/dashboard" class="dropdown-item" style="background: #eff6ff; border: 1px solid #bfdbfe; margin-bottom: 6px;">
+                                <div class="dropdown-icon" style="background: #2563eb; color: white;">📊</div>
+                                <div class="dropdown-text">
+                                    <div class="dropdown-title" style="color: #1d4ed8;">Sistema GestionQ (Acceso Online) ↗</div>
+                                    <div class="dropdown-desc">Ingresar al ERP comercial y dashboard en vivo</div>
+                                </div>
+                            </a>
+                            <a href="#sistemas" class="dropdown-item">
+                                <div class="dropdown-icon">💻</div>
+                                <div class="dropdown-text">
+                                    <div class="dropdown-title">Sistemas a Medida & POS</div>
+                                    <div class="dropdown-desc">Software propio para comercios, cajas y stock</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="#sistemas">💻 Ver todos los desarrollos de software →</a>
+                        </div>
                     </div>
                 </li>
 
@@ -2280,10 +2258,9 @@
                     <div class="mobile-divider"></div>
                     <div class="mobile-section-label">Servicios & Software</div>
                     <a href="#servicio-tecnico" class="mobile-link">🛠️ Servicio Técnico Homologado</a>
-                    <a href="#sistemas" class="mobile-link">💻 Sistemas de Facturación & POS</a>
-                    <a href="#sistemas" class="mobile-link">🎾 Gestión Deportiva & Turnos</a>
-                    <a href="#sistemas" class="mobile-link">🚚 Control de Flotas & Logística</a>
-                    <a href="#sistemas" class="mobile-link">📺 Cartelería Digital & Pantallas</a>
+                    <div id="mobile-software-dynamic-items">
+                        <a href="#sistemas" class="mobile-link">💻 Sistemas a Medida</a>
+                    </div>
 
                     <div class="mobile-divider"></div>
                     <div class="mobile-section-label">Empresas</div>
@@ -2904,14 +2881,9 @@
             <!-- Col 3 -->
             <div class="footer-col">
                 <h4>Servicios & Software</h4>
-                <ul class="footer-links">
-                    <li><a href="#servicio-tecnico">Reparación de Impresoras Fiscales</a></li>
-                    <li><a href="#servicio-tecnico">Service de Impresoras Térmicas</a></li>
-                    <li><a href="#sistemas">💻 Sistemas de Facturación & POS</a></li>
-                    <li><a href="#sistemas">🎾 Gestión de Turnos y Clubes</a></li>
-                    <li><a href="#sistemas">🚚 Control de Flotas y Viajes</a></li>
-                    <li><a href="#sistemas">⚖️ Integración con Balanzas</a></li>
-                    <li><a href="#sistemas">📺 Cartelería Digital para Negocios</a></li>
+                <ul class="footer-links" id="footer-software-links">
+                    <li><a href="#servicio-tecnico">🛠️ Servicio Técnico Homologado</a></li>
+                    <li><a href="#sistemas">💻 Sistemas de Software a Medida</a></li>
                 </ul>
             </div>
 
@@ -3567,52 +3539,127 @@
         }
 
         function renderLandingSystems(sistemas) {
+            // 1. Tarjetas en la sección #sistemas
             const container = document.getElementById('systems-container');
-            if (!container) return;
-            container.innerHTML = '';
+            if (container) {
+                container.innerHTML = '';
+                sistemas.forEach(s => {
+                    const card = document.createElement('div');
+                    card.className = 'soft-card';
+                    const waMsg = encodeURIComponent(s.whatsappMsg || `Hola GaLop, quisiera consultar por el sistema de ${s.titulo}`);
+                    const featuresHtml = (s.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('');
 
-            sistemas.forEach(s => {
-                const card = document.createElement('div');
-                card.className = 'soft-card';
-                const waMsg = encodeURIComponent(s.whatsappMsg || `Hola GaLop, quisiera consultar por el sistema de ${s.titulo}`);
-                const featuresHtml = (s.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('');
+                    let actionsHtml = '';
+                    if (s.loginUrl) {
+                        actionsHtml = `
+                            <div class="soft-card-actions">
+                                <a href="${s.loginUrl}" class="b-card-btn-login">
+                                    <span>${s.loginBtnText || '🔐 Iniciar Sesión GestionQ →'}</span>
+                                </a>
+                                <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn-secondary">
+                                    <span>${s.btnText || '💬 Solicitar demo comercial →'}</span>
+                                </a>
+                            </div>
+                        `;
+                    } else {
+                        actionsHtml = `
+                            <div class="soft-card-actions">
+                                <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn" style="color: var(--accent); font-weight: 600; text-decoration: none;">
+                                    <span>${s.btnText || 'Solicitar más información →'}</span>
+                                </a>
+                            </div>
+                        `;
+                    }
 
-                let actionsHtml = '';
-                if (s.loginUrl) {
-                    actionsHtml = `
-                        <div class="soft-card-actions">
-                            <a href="${s.loginUrl}" class="b-card-btn-login">
-                                <span>${s.loginBtnText || '🔐 Iniciar Sesión GestionQ →'}</span>
-                            </a>
-                            <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn-secondary">
-                                <span>${s.btnText || '💬 Solicitar demo comercial →'}</span>
-                            </a>
+                    card.innerHTML = `
+                        <div class="soft-card-head">
+                            <div class="soft-icon">${s.icono || '💻'}</div>
+                            <span class="soft-badge">${s.badge || 'Software'}</span>
                         </div>
+                        <h3>${s.titulo}</h3>
+                        <p>${s.descripcion}</p>
+                        <ul class="soft-features">
+                            ${featuresHtml}
+                        </ul>
+                        ${actionsHtml}
                     `;
-                } else {
-                    actionsHtml = `
-                        <div class="soft-card-actions">
-                            <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn" style="color: var(--accent); font-weight: 600; text-decoration: none;">
-                                <span>${s.btnText || 'Solicitar más información →'}</span>
-                            </a>
-                        </div>
-                    `;
-                }
+                    container.appendChild(card);
+                });
+            }
 
-                card.innerHTML = `
-                    <div class="soft-card-head">
-                        <div class="soft-icon">${s.icono || '💻'}</div>
-                        <span class="soft-badge">${s.badge || 'Software'}</span>
-                    </div>
-                    <h3>${s.titulo}</h3>
-                    <p>${s.descripcion}</p>
-                    <ul class="soft-features">
-                        ${featuresHtml}
-                    </ul>
-                    ${actionsHtml}
+            // 2. Submenú en el dropdown de navegación superior (Desktop)
+            const navSubmenu = document.getElementById('nav-software-dynamic-items');
+            if (navSubmenu) {
+                navSubmenu.innerHTML = '';
+                sistemas.forEach(s => {
+                    const item = document.createElement('a');
+                    item.className = 'dropdown-item';
+                    if (s.loginUrl) {
+                        item.href = s.loginUrl;
+                        item.style.background = '#eff6ff';
+                        item.style.border = '1px solid #bfdbfe';
+                        item.style.marginBottom = '6px';
+                        item.innerHTML = `
+                            <div class="dropdown-icon" style="background: #2563eb; color: white;">${s.icono || '📊'}</div>
+                            <div class="dropdown-text">
+                                <div class="dropdown-title" style="color: #1d4ed8;">${s.titulo} ↗</div>
+                                <div class="dropdown-desc">${s.badge || 'Acceso Online'} · Ingresar al sistema</div>
+                            </div>
+                        `;
+                    } else {
+                        item.href = '#sistemas';
+                        item.innerHTML = `
+                            <div class="dropdown-icon">${s.icono || '💻'}</div>
+                            <div class="dropdown-text">
+                                <div class="dropdown-title">${s.titulo}</div>
+                                <div class="dropdown-desc">${s.badge || 'Software a medida'}</div>
+                            </div>
+                        `;
+                    }
+                    navSubmenu.appendChild(item);
+                });
+            }
+
+            // 3. Submenú en el menú desplegable móvil (Drawer)
+            const mobileSubmenu = document.getElementById('mobile-software-dynamic-items');
+            if (mobileSubmenu) {
+                mobileSubmenu.innerHTML = '';
+                sistemas.forEach(s => {
+                    const link = document.createElement('a');
+                    link.className = 'mobile-link';
+                    if (s.loginUrl) {
+                        link.href = s.loginUrl;
+                        link.style.background = '#eff6ff';
+                        link.style.color = '#1d4ed8';
+                        link.style.fontWeight = '700';
+                        link.style.border = '1px solid #bfdbfe';
+                        link.textContent = `${s.icono || '📊'} ${s.titulo} ↗`;
+                    } else {
+                        link.href = '#sistemas';
+                        link.textContent = `${s.icono || '💻'} ${s.titulo}`;
+                    }
+                    if (typeof closeMobileDrawer === 'function') {
+                        link.addEventListener('click', closeMobileDrawer);
+                    }
+                    mobileSubmenu.appendChild(link);
+                });
+            }
+
+            // 4. Enlaces de sistemas en el Pie de Página (Footer)
+            const footerList = document.getElementById('footer-software-links');
+            if (footerList) {
+                footerList.innerHTML = `
+                    <li><a href="#servicio-tecnico">🛠️ Servicio Técnico Homologado</a></li>
                 `;
-                container.appendChild(card);
-            });
+                sistemas.forEach(s => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = s.loginUrl || '#sistemas';
+                    a.textContent = `${s.icono || '💻'} ${s.titulo}`;
+                    li.appendChild(a);
+                    footerList.appendChild(li);
+                });
+            }
         }
 
         // Carga y renderizado dinámico del contenido CMS de la Home
