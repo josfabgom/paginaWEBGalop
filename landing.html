@@ -2645,10 +2645,10 @@
                 </div>
 
                 <!-- Sistema 5: Cartelería Digital & Pantallas -->
-                <div class="soft-card">
+                <div class="soft-card" style="border: 2px solid #bae6fd; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);">
                     <div class="soft-card-head">
-                        <div class="soft-icon">📺</div>
-                        <span class="soft-badge">Cartelería & Pantallas</span>
+                        <div class="soft-icon" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0284c7;">📺</div>
+                        <span class="soft-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">Cartelería & Pantallas · Demo en Vivo</span>
                     </div>
                     <h3>Sistemas de Cartelería Digital & Menús para Negocios</h3>
                     <p>Solución multimedia para proyectar precios en vivo, ofertas destacadas, menús interactivos y promociones en pantallas Smart TV o tótems publicitarios de tu local comercial.</p>
@@ -2657,7 +2657,27 @@
                         <li><span>✓</span> Diseño dinámico de menú boards para rotiserías, cafeterías, kioscos, carnicerías y supermercados</li>
                         <li><span>✓</span> Reproducción programable por franjas horarias (mañana, mediodía, noche) en bucle continuo</li>
                     </ul>
-                    <a href="https://wa.me/5493765224717?text=Hola%20GaLop,%20quisiera%20consultar%20por%20el%20sistema%20de%20Carteler%C3%ADa%20Digital%20y%20Pantallas%20para%20Negocios" target="_blank" class="b-card-btn">Consultar por cartelería digital →</a>
+
+                    <!-- Muestra Interactiva Banner Mini -->
+                    <div style="background: #0f172a; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); transition: transform 0.2s;" onclick="openCarteleriaModal('/demo-carteleria.html', 'Sistemas de Cartelería Digital (Farmacia San José)')">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.25rem;">📺</span>
+                            <div style="text-align: left;">
+                                <div style="color: #38bdf8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Muestra Gráfica en Vivo</div>
+                                <div style="color: #e2e8f0; font-size: 0.78rem;">Pantalla instalada en Farmacia San José</div>
+                            </div>
+                        </div>
+                        <span style="background: #0284c7; color: white; border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; font-weight: 700;">Ver ▶</span>
+                    </div>
+
+                    <div class="soft-card-actions">
+                        <button type="button" class="b-card-btn-login" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);" onclick="openCarteleriaModal('/demo-carteleria.html', 'Sistemas de Cartelería Digital (Farmacia San José)')">
+                            <span>📺 Ver Demostración en Pantalla ↗</span>
+                        </button>
+                        <a href="https://wa.me/5493765224717?text=Hola%20GaLop,%20quisiera%20consultar%20por%20el%20sistema%20de%20Carteler%C3%ADa%20Digital%20y%20Pantallas%20para%20Negocios" target="_blank" class="b-card-btn-secondary">
+                            <span>💬 Cotizar para mi Negocio →</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -3195,7 +3215,70 @@
             if (!overlay) return;
             overlay.classList.remove('active');
             document.body.classList.remove('modal-open');
+            const dialog = document.querySelector('.info-modal-dialog');
+            if (dialog) {
+                dialog.style.maxWidth = '';
+                dialog.style.background = '';
+                dialog.style.color = '';
+            }
+            const content = document.getElementById('landing-modal-content');
+            if (content) content.innerHTML = '';
             activeAutoplays.forEach(ctrl => ctrl.resume());
+        }
+
+        // MODAL PARA DEMOSTRACIÓN DE CARTELERÍA DIGITAL
+        function openCarteleriaModal(demoUrl, title) {
+            const dialog = document.querySelector('.info-modal-dialog');
+            const content = document.getElementById('landing-modal-content');
+            if (!content || !dialog) return;
+
+            dialog.style.maxWidth = '980px';
+            dialog.style.background = '#0b131a';
+            dialog.style.color = '#ffffff';
+
+            const cleanTitle = title || 'Sistemas de Cartelería Digital & Menús';
+            const waMsg = encodeURIComponent('Hola GaLop SRL, estuve viendo la demostración en vivo de Cartelería Digital (Farmacia San José) y quisiera cotizar un sistema de pantallas para mi negocio');
+
+            content.innerHTML = `
+                <div style="padding: 24px 20px 20px;">
+                    <!-- Header Modal -->
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; padding-right: 36px;">
+                        <div>
+                            <span style="display: inline-block; background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                                📺 Demostración en Vivo · GaLop S.R.L.
+                            </span>
+                            <h3 style="margin: 0; font-size: 1.35rem; color: #ffffff; font-weight: 700; line-height: 1.3;">
+                                ${cleanTitle}
+                            </h3>
+                            <p style="margin: 4px 0 0; color: #94a3b8; font-size: 0.85rem;">
+                                Ejemplo real: Pantalla comercial instalada en Farmacia San José
+                            </p>
+                        </div>
+                        <a href="${demoUrl}" target="_blank" class="b-card-btn-login" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff !important; font-size: 0.78rem; padding: 8px 14px; text-decoration: none; white-space: nowrap; border-radius: 8px;" title="Ver en pantalla completa">
+                            ⛶ Pantalla Completa ↗
+                        </a>
+                    </div>
+
+                    <!-- Frame Container (Aspect 1672 / 941 de la escena) -->
+                    <div style="position: relative; width: 100%; aspect-ratio: 1672 / 941; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15);">
+                        <iframe src="${demoUrl}" style="width: 100%; height: 100%; border: none; display: block;" allow="autoplay" loading="eager"></iframe>
+                    </div>
+
+                    <!-- Footer Details & Call to Action -->
+                    <div style="margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-size: 0.83rem; color: #cbd5e1; max-width: 580px; line-height: 1.5;">
+                            💡 <strong>¿Cómo funciona para tu comercio?</strong> El contenido (precios, ofertas del día, menús rotativos, avisos) se actualiza de forma automática y remota sin imprimir afiches ni carteles.
+                        </div>
+                        <div style="display: flex; gap: 10px; width: auto;">
+                            <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="btn btn-whatsapp" style="padding: 10px 18px; font-size: 0.88rem; text-decoration: none; border-radius: 8px; font-weight: 700; white-space: nowrap;">
+                                💬 Cotizar para mi Negocio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            openModal();
         }
 
         // Listener para cerrar modal
@@ -3550,7 +3633,32 @@
                     const featuresHtml = (s.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('');
 
                     let actionsHtml = '';
-                    if (s.loginUrl) {
+                    let previewHtml = '';
+
+                    if (s.demoUrl) {
+                        previewHtml = `
+                            <div style="background: #0f172a; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); transition: transform 0.2s;" onclick="openCarteleriaModal('${s.demoUrl}', '${(s.titulo || '').replace(/'/g, "\\'")}')">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 1.25rem;">📺</span>
+                                    <div style="text-align: left;">
+                                        <div style="color: #38bdf8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Muestra Gráfica en Vivo</div>
+                                        <div style="color: #e2e8f0; font-size: 0.78rem;">Ver cómo queda en pantalla real</div>
+                                    </div>
+                                </div>
+                                <span style="background: #0284c7; color: white; border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; font-weight: 700;">Ver ▶</span>
+                            </div>
+                        `;
+                        actionsHtml = `
+                            <div class="soft-card-actions">
+                                <button type="button" class="b-card-btn-login" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);" onclick="openCarteleriaModal('${s.demoUrl}', '${(s.titulo || '').replace(/'/g, "\\'")}')">
+                                    <span>${s.demoBtnText || '📺 Ver Demostración en Pantalla ↗'}</span>
+                                </button>
+                                <a href="https://wa.me/5493765224717?text=${waMsg}" target="_blank" class="b-card-btn-secondary">
+                                    <span>${s.btnText || '💬 Cotizar para mi Negocio →'}</span>
+                                </a>
+                            </div>
+                        `;
+                    } else if (s.loginUrl) {
                         actionsHtml = `
                             <div class="soft-card-actions">
                                 <a href="${s.loginUrl}" class="b-card-btn-login">
@@ -3581,6 +3689,7 @@
                         <ul class="soft-features">
                             ${featuresHtml}
                         </ul>
+                        ${previewHtml}
                         ${actionsHtml}
                     `;
                     container.appendChild(card);
@@ -3594,7 +3703,20 @@
                 sistemas.forEach(s => {
                     const item = document.createElement('a');
                     item.className = 'dropdown-item';
-                    if (s.loginUrl) {
+                    if (s.demoUrl) {
+                        item.href = s.demoUrl;
+                        item.target = '_blank';
+                        item.style.background = '#f0f9ff';
+                        item.style.border = '1px solid #bae6fd';
+                        item.style.marginBottom = '6px';
+                        item.innerHTML = `
+                            <div class="dropdown-icon" style="background: #0284c7; color: white;">${s.icono || '📺'}</div>
+                            <div class="dropdown-text">
+                                <div class="dropdown-title" style="color: #0369a1;">${s.titulo} ↗</div>
+                                <div class="dropdown-desc">${s.badge || 'Demo en Vivo'} · Ver muestra en pantalla</div>
+                            </div>
+                        `;
+                    } else if (s.loginUrl) {
                         item.href = s.loginUrl;
                         item.style.background = '#eff6ff';
                         item.style.border = '1px solid #bfdbfe';
@@ -3627,7 +3749,15 @@
                 sistemas.forEach(s => {
                     const link = document.createElement('a');
                     link.className = 'mobile-link';
-                    if (s.loginUrl) {
+                    if (s.demoUrl) {
+                        link.href = s.demoUrl;
+                        link.target = '_blank';
+                        link.style.background = '#f0f9ff';
+                        link.style.color = '#0369a1';
+                        link.style.fontWeight = '700';
+                        link.style.border = '1px solid #bae6fd';
+                        link.textContent = `${s.icono || '📺'} ${s.titulo} ↗ (Demo)`;
+                    } else if (s.loginUrl) {
                         link.href = s.loginUrl;
                         link.style.background = '#eff6ff';
                         link.style.color = '#1d4ed8';
@@ -3654,7 +3784,8 @@
                 sistemas.forEach(s => {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
-                    a.href = s.loginUrl || '#sistemas';
+                    a.href = s.demoUrl || s.loginUrl || '#sistemas';
+                    if (s.demoUrl) a.target = '_blank';
                     a.textContent = `${s.icono || '💻'} ${s.titulo}`;
                     li.appendChild(a);
                     footerList.appendChild(li);

@@ -547,7 +547,9 @@ const server = http.createServer(async (req, res) => {
           btnText: body.btnText || 'Solicitar más información →',
           whatsappMsg: body.whatsappMsg || `Hola GaLop, quisiera consultar por el sistema de ${title}`,
           loginUrl: body.loginUrl || '',
-          loginBtnText: body.loginBtnText || ''
+          loginBtnText: body.loginBtnText || '',
+          demoUrl: body.demoUrl || '',
+          demoBtnText: body.demoBtnText || ''
         };
 
         if (index >= 0) {
@@ -600,6 +602,8 @@ const server = http.createServer(async (req, res) => {
     pathname = '/login.html';
   } else if (pathname === '/dashboard') {
     pathname = '/dashboard.html';
+  } else if (pathname === '/demo-carteleria' || pathname === '/carteleria' || pathname === '/demo') {
+    pathname = '/demo-carteleria.html';
   }
 
   // --- STATIC FILE SERVING ---

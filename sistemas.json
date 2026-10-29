@@ -60,7 +60,7 @@
   {
     "id": "sistema-5",
     "icono": "📺",
-    "badge": "Cartelería & Pantallas",
+    "badge": "Cartelería & Pantallas · Demo en Vivo",
     "titulo": "Sistemas de Cartelería Digital & Menús para Negocios",
     "descripcion": "Solución multimedia para proyectar precios en vivo, ofertas destacadas, menús interactivos y promociones en pantallas Smart TV o tótems publicitarios de tu local comercial.",
     "features": [
@@ -68,7 +68,9 @@
       "Diseño dinámico de menú boards para rotiserías, cafeterías, kioscos, carnicerías y supermercados",
       "Reproducción programable por franjas horarias (mañana, mediodía, noche) en bucle continuo"
     ],
-    "btnText": "Consultar por cartelería digital →",
-    "whatsappMsg": "Hola GaLop, quisiera consultar por el sistema de Cartelería Digital y Pantallas para Negocios"
+    "demoUrl": "/demo-carteleria.html",
+    "demoBtnText": "📺 Ver Demostración en Pantalla ↗",
+    "btnText": "💬 Cotizar para mi Negocio →",
+    "whatsappMsg": "Hola GaLop, quisiera consultar por el sistema de Cartelería Digital y Pantallas para Negocios (vi la demostración en vivo)"
   }
 ]

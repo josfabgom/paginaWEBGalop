@@ -1157,6 +1157,17 @@
               <input type="text" id="modal-sys-login-btn" class="form-control" placeholder="Ej: 🔐 Iniciar Sesión GestionQ →">
             </div>
           </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f0fdf4; padding: 12px; border-radius: 8px; border: 1px solid #bbf7d0; margin-top: 10px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.78rem; color: #166534; font-weight: 600;">Enlace Demostración en Pantalla (Opcional)</label>
+              <input type="text" id="modal-sys-demo-url" class="form-control" placeholder="Ej: /demo-carteleria.html">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.78rem; color: #166534; font-weight: 600;">Texto Botón Demo (Opcional)</label>
+              <input type="text" id="modal-sys-demo-btn" class="form-control" placeholder="Ej: 📺 Ver Demostración en Pantalla ↗">
+            </div>
+          </div>
         </div>
 
         <div class="modal-footer">
@@ -1907,6 +1918,8 @@
       document.getElementById('modal-sys-wa').value = '';
       document.getElementById('modal-sys-login-url').value = '';
       document.getElementById('modal-sys-login-btn').value = '';
+      document.getElementById('modal-sys-demo-url').value = '';
+      document.getElementById('modal-sys-demo-btn').value = '';
       document.getElementById('system-modal').classList.add('open');
     }
 
@@ -1926,6 +1939,8 @@
       document.getElementById('modal-sys-wa').value = s.whatsappMsg || '';
       document.getElementById('modal-sys-login-url').value = s.loginUrl || '';
       document.getElementById('modal-sys-login-btn').value = s.loginBtnText || '';
+      document.getElementById('modal-sys-demo-url').value = s.demoUrl || '';
+      document.getElementById('modal-sys-demo-btn').value = s.demoBtnText || '';
       document.getElementById('system-modal').classList.add('open');
     }
 
@@ -1950,7 +1965,9 @@
         btnText: document.getElementById('modal-sys-btn').value.trim(),
         whatsappMsg: document.getElementById('modal-sys-wa').value.trim(),
         loginUrl: document.getElementById('modal-sys-login-url').value.trim(),
-        loginBtnText: document.getElementById('modal-sys-login-btn').value.trim()
+        loginBtnText: document.getElementById('modal-sys-login-btn').value.trim(),
+        demoUrl: document.getElementById('modal-sys-demo-url').value.trim(),
+        demoBtnText: document.getElementById('modal-sys-demo-btn').value.trim()
       };
 
       try {
